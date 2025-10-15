@@ -1,103 +1,177 @@
-import Image from "next/image";
+import Link from 'next/link'
+import Image from 'next/image'
+import { ArrowRight, Github, Twitter, Linkedin, Mail } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { posts } from '@/lib/posts'
 
 export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const recentPosts = posts
+    .filter(post => post.published)
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+    .slice(0, 3)
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  return (
+    <div className="min-h-screen">
+      {/* Hero Section */}
+      <section className="py-20 px-4">
+        <div className="max-w-4xl mx-auto text-center">
+          <div className="mb-8">
+            <div className="relative w-32 h-32 mx-auto mb-6">
+              <div className="w-full h-full rounded-full bg-gradient-to-br from-primary to-primary/60 flex items-center justify-center text-4xl font-bold text-primary-foreground">
+                Y
+              </div>
+            </div>
+            <h1 className="text-4xl md:text-6xl font-bold tracking-tight mb-6">
+              Hi, I&apos;m{' '}
+              <span className="bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
+                Your Name
+              </span>
+            </h1>
+            <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-2xl mx-auto">
+              Full-stack developer passionate about creating beautiful, performant web applications 
+              with modern technologies.
+            </p>
+          </div>
+
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+            <Button asChild size="lg">
+              <Link href="/blog">
+                Read My Blog
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Link>
+            </Button>
+            <Button asChild variant="outline" size="lg">
+              <Link href="/projects">
+                View Projects
+              </Link>
+            </Button>
+          </div>
+
+          {/* Social Links */}
+          <div className="flex justify-center space-x-6">
+            <a
+              href="https://github.com/yourusername"
+              className="text-muted-foreground hover:text-primary transition-colors"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Github className="h-6 w-6" />
+              <span className="sr-only">GitHub</span>
+            </a>
+            <a
+              href="https://twitter.com/yourhandle"
+              className="text-muted-foreground hover:text-primary transition-colors"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Twitter className="h-6 w-6" />
+              <span className="sr-only">Twitter</span>
+            </a>
+            <a
+              href="https://linkedin.com/in/yourprofile"
+              className="text-muted-foreground hover:text-primary transition-colors"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Linkedin className="h-6 w-6" />
+              <span className="sr-only">LinkedIn</span>
+            </a>
+            <a
+              href="mailto:your.email@example.com"
+              className="text-muted-foreground hover:text-primary transition-colors"
+            >
+              <Mail className="h-6 w-6" />
+              <span className="sr-only">Email</span>
+            </a>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      </section>
+
+      {/* Recent Posts */}
+      {recentPosts.length > 0 && (
+        <section className="py-20 px-4 bg-muted/30">
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">
+                Recent Blog Posts
+              </h2>
+              <p className="text-xl text-muted-foreground">
+                Latest thoughts on web development and technology
+              </p>
+            </div>
+
+            <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+              {recentPosts.map((post) => (
+                <Card key={post.id} className="group hover:shadow-lg transition-shadow">
+                  <CardHeader>
+                    {post.image && (
+                      <div className="relative aspect-video mb-4 rounded-lg overflow-hidden">
+                        <Image
+                          src={post.image}
+                          alt={post.title}
+                          fill
+                          className="object-cover transition-transform group-hover:scale-105"
+                        />
+                      </div>
+                    )}
+                    <CardTitle className="group-hover:text-primary transition-colors line-clamp-2">
+                      {post.title}
+                    </CardTitle>
+                    <CardDescription className="line-clamp-3">
+                      {post.description}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="flex items-center justify-between text-sm text-muted-foreground">
+                      <time>
+                        {new Date(post.date).toLocaleDateString('en-US', {
+                          year: 'numeric',
+                          month: 'short',
+                          day: 'numeric',
+                        })}
+                      </time>
+                      <span>{Math.ceil(post.content.split(' ').length / 200)} min read</span>
+                    </div>
+                    <Button asChild variant="ghost" className="w-full mt-4">
+                      <Link href={`/blog/${post.slug}`}>
+                        Read More
+                        <ArrowRight className="ml-2 h-4 w-4" />
+                      </Link>
+                    </Button>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+
+            <div className="text-center mt-12">
+              <Button asChild variant="outline" size="lg">
+                <Link href="/blog">
+                  View All Posts
+                </Link>
+              </Button>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* About Preview */}
+      <section className="py-20 px-4">
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-6">
+            About Me
+          </h2>
+          <p className="text-xl text-muted-foreground mb-8">
+            I&apos;m a passionate developer with expertise in modern web technologies. 
+            I love building scalable applications and sharing knowledge through writing.
+          </p>
+          <Button asChild variant="outline" size="lg">
+            <Link href="/about">
+              Learn More
+            </Link>
+          </Button>
+        </div>
+      </section>
     </div>
-  );
+  )
 }

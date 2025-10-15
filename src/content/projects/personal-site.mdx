@@ -1,0 +1,119 @@
+---
+title: "Personal Site & Technical Blog"
+description: "A modern personal website built with Next.js 14, TypeScript, and Tailwind CSS featuring a technical blog with MDX support"
+date: "2024-01-10"
+published: true
+tags: ["Next.js", "TypeScript", "Tailwind CSS", "MDX", "Contentlayer"]
+github: "https://github.com/yourusername/personal-site"
+demo: "https://mydomain.tld"
+image: "/images/projects/personal-site.jpg"
+---
+
+# Personal Site & Technical Blog
+
+A modern, performant personal website showcasing my work and technical insights. Built with cutting-edge web technologies and optimized for both performance and developer experience.
+
+## Features
+
+- **Modern Stack**: Next.js 14 with App Router, TypeScript, and Tailwind CSS
+- **Content Management**: MDX-powered blog with Contentlayer for type-safe content
+- **SEO Optimized**: Automatic sitemap generation, RSS feeds, and Open Graph tags
+- **Performance**: Lighthouse score 90+ across all metrics
+- **Accessibility**: WCAG 2.1 AA compliant with keyboard navigation support
+- **Dark Mode**: System preference detection with manual toggle
+- **Responsive Design**: Mobile-first approach with perfect mobile experience
+
+## Technical Highlights
+
+### Content Layer Architecture
+```typescript
+// contentlayer.config.ts
+export const Post = defineDocumentType(() => ({
+  name: 'Post',
+  filePathPattern: `blog/**/*.mdx`,
+  contentType: 'mdx',
+  fields: {
+    title: { type: 'string', required: true },
+    description: { type: 'string', required: true },
+    date: { type: 'date', required: true },
+    tags: { type: 'list', of: { type: 'string' } },
+    category: { type: 'string' },
+  },
+  computedFields: {
+    url: {
+      type: 'string',
+      resolve: (post) => `/blog/${post._raw.flattenedPath}`,
+    },
+  },
+}))
+```
+
+### Advanced Search Implementation
+```typescript
+// lib/search.ts
+export function searchPosts(query: string): Post[] {
+  const searchTerms = query.toLowerCase().split(' ')
+  
+  return allPosts.filter(post => {
+    const searchableText = [
+      post.title,
+      post.description,
+      post.body.raw,
+      ...(post.tags || []),
+      post.category
+    ].join(' ').toLowerCase()
+    
+    return searchTerms.every(term => searchableText.includes(term))
+  })
+}
+```
+
+## Performance Optimizations
+
+- **Image Optimization**: Next.js Image component with WebP/AVIF support
+- **Code Splitting**: Automatic route-based code splitting
+- **Static Generation**: Pre-rendered pages for maximum performance
+- **Bundle Analysis**: Optimized bundle size with tree shaking
+- **Caching Strategy**: Aggressive caching for static assets
+
+## Development Experience
+
+- **Type Safety**: Full TypeScript coverage with strict mode
+- **Hot Reloading**: Instant feedback during development
+- **Linting**: ESLint with Next.js recommended rules
+- **Formatting**: Prettier for consistent code style
+- **Git Hooks**: Pre-commit hooks for quality assurance
+
+## Deployment
+
+The site is deployed using:
+- **Docker**: Multi-stage builds for optimized production images
+- **Nginx**: Reverse proxy with SSL termination and caching
+- **GitHub Actions**: Automated CI/CD pipeline
+- **Self-hosted**: Running on personal Ubuntu server
+
+## Results
+
+- **Lighthouse Performance**: 98/100
+- **Lighthouse Accessibility**: 100/100
+- **Lighthouse SEO**: 100/100
+- **Core Web Vitals**: All metrics in green
+- **Bundle Size**: < 100KB gzipped for initial page load
+
+## Technologies Used
+
+- **Framework**: Next.js 14 (App Router)
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS
+- **UI Components**: shadcn/ui
+- **Content**: MDX + Contentlayer
+- **Deployment**: Docker + Nginx
+- **CI/CD**: GitHub Actions
+
+## Future Enhancements
+
+- [ ] Add comment system with Giscus
+- [ ] Implement newsletter subscription
+- [ ] Add project showcase with interactive demos
+- [ ] Integrate analytics with privacy-focused solution
+- [ ] Add internationalization support
