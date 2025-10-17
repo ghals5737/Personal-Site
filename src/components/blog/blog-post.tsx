@@ -13,7 +13,7 @@ interface BlogPostProps {
 }
 
 export async function generateStaticParams() {
-  const posts = await import('@/lib/posts').then(m => m.posts)
+  const { posts } = await import('@/lib/posts')
   return posts.filter(post => post.published).map((post) => ({
     slug: post.slug,
   }))
@@ -66,7 +66,7 @@ export async function BlogPost({ params }: BlogPostProps) {
   }
 
   const relatedPosts = getRelatedPosts(post)
-  const readingTime = Math.ceil(post.content.split(' ').length / 200)
+  const readingTime = Math.ceil(post.body.raw.split(' ').length / 200)
 
   return (
     <article className="max-w-4xl mx-auto px-4 py-8">
@@ -132,7 +132,7 @@ export async function BlogPost({ params }: BlogPostProps) {
 
       {/* Content */}
       <div className="prose prose-lg max-w-none dark:prose-invert">
-        <div dangerouslySetInnerHTML={{ __html: post.content.replace(/\n/g, '<br />') }} />
+        <div dangerouslySetInnerHTML={{ __html: post.body.raw.replace(/\n/g, '<br />') }} />
       </div>
 
       {/* Related Posts */}
@@ -141,7 +141,7 @@ export async function BlogPost({ params }: BlogPostProps) {
           <h2 className="text-2xl font-bold mb-6">Related Posts</h2>
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {relatedPosts.map((relatedPost) => (
-              <article key={relatedPost.id} className="group">
+              <article key={relatedPost._id} className="group">
                 <a href={`/blog/${relatedPost.slug}`} className="block">
                   <div className="rounded-lg border p-4 transition-colors hover:bg-muted/50">
                     <h3 className="font-semibold mb-2 group-hover:text-primary transition-colors">

@@ -13,15 +13,51 @@ export const metadata = generateMetadata({
 const projects = [
   {
     id: '1',
-    title: 'Personal Site & Technical Blog',
-    description: 'A modern personal website built with Next.js 14, TypeScript, and Tailwind CSS featuring a technical blog with MDX support',
-    date: '2024-01-10',
+    title: 'SNSB-3 인지검사 플랫폼',
+    description: '노인 종합 신경심리검사 배터리 3판 디지털 전환 플랫폼. 검사 기록 중심의 도메인 모델 설계, AWS 인프라 아키텍처, Next.js 백오피스 개발',
+    date: '2025-02-01',
     published: true,
-    tags: ['Next.js', 'TypeScript', 'Tailwind CSS', 'MDX', 'Contentlayer'],
-    github: 'https://github.com/yourusername/personal-site',
-    demo: 'https://mydomain.tld',
-    image: '/images/projects/personal-site.jpg',
-    slug: 'personal-site',
+    tags: ['Kotlin', 'Spring Boot', 'Next.js', 'TypeScript', 'AWS', 'ECS', 'PostgreSQL', 'Terraform'],
+    github: 'https://github.com/ghals5737',
+    demo: null,
+    image: '/images/projects/snsb3.jpg',
+    slug: 'snsb3-platform',
+  },
+  {
+    id: '2',
+    title: '개발자 플랫폼',
+    description: '외부 개발자들이 Swit API를 손쉽게 활용할 수 있도록 오픈 API 설계 및 SaaS 플랫폼 확장. 서드파티 앱 연동 플랫폼 개발',
+    date: '2023-12-01',
+    published: true,
+    tags: ['Next.js', 'TypeScript', 'OAuth', 'JWT', 'GCP', 'Cloud Run', 'REST API'],
+    github: 'https://github.com/ghals5737',
+    demo: null,
+    image: '/images/projects/developer-platform.jpg',
+    slug: 'developer-platform',
+  },
+  {
+    id: '3',
+    title: '인하우스툴 고도화',
+    description: '테크니컬 라이터를 위한 문서 작업 및 이메일 작성 도구. Flask + Vanilla JS에서 Next.js + TypeScript로 전면 리팩토링',
+    date: '2023-05-01',
+    published: true,
+    tags: ['Next.js', 'TypeScript', 'Flask', 'GCP', 'Cloud Build', 'OAuth'],
+    github: 'https://github.com/ghals5737',
+    demo: null,
+    image: '/images/projects/inhouse-tools.jpg',
+    slug: 'inhouse-tools',
+  },
+  {
+    id: '4',
+    title: '차세대 통합 LMS',
+    description: 'MyBatis에서 JPA로 전환, MSA 구조 적용, 쿼리 최적화를 통한 시스템 확장성과 유지보수성 향상',
+    date: '2022-01-01',
+    published: true,
+    tags: ['Java', 'Spring Boot', 'JPA', 'MyBatis', 'AWS', 'CodeDeploy', 'MySQL'],
+    github: 'https://github.com/ghals5737',
+    demo: null,
+    image: '/images/projects/lms.jpg',
+    slug: 'nextgen-lms',
   },
 ]
 
@@ -34,7 +70,7 @@ export default function ProjectsPage() {
       <header className="mb-12">
         <h1 className="text-4xl font-bold tracking-tight mb-4">Projects</h1>
         <p className="text-xl text-muted-foreground">
-          A collection of projects I&apos;ve worked on, from web applications to open-source contributions
+          백엔드 개발자로서 참여한 주요 프로젝트들을 소개합니다
         </p>
       </header>
 
@@ -44,16 +80,22 @@ export default function ProjectsPage() {
           {publishedProjects.map((project) => (
             <Card key={project.id} className="group hover:shadow-lg transition-shadow">
               {/* Featured Image */}
-              {project.image && (
-                <div className="relative aspect-video rounded-t-lg overflow-hidden">
+              <div className="relative aspect-video rounded-t-lg overflow-hidden bg-gradient-to-br from-primary/20 to-primary/5">
+                {project.image ? (
                   <Image
                     src={project.image}
                     alt={project.title}
                     fill
                     className="object-cover transition-transform group-hover:scale-105"
                   />
-                </div>
-              )}
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center">
+                    <div className="text-4xl font-bold text-primary/60">
+                      {project.title.charAt(0)}
+                    </div>
+                  </div>
+                )}
+              </div>
 
               <CardHeader>
                 <div className="flex items-start justify-between gap-4">
@@ -144,20 +186,20 @@ export default function ProjectsPage() {
       <section className="mt-16 text-center">
         <Card className="bg-muted/30">
           <CardContent className="pt-8">
-            <h2 className="text-2xl font-bold mb-4">Have a project in mind?</h2>
+            <h2 className="text-2xl font-bold mb-4">프로젝트 협업을 원하시나요?</h2>
             <p className="text-muted-foreground mb-6">
-              I&apos;m always interested in new opportunities and collaborations. 
-              Let&apos;s discuss how we can work together!
+              새로운 기회와 협업에 항상 관심이 있습니다. 
+              함께 일할 수 있는 방법을 논의해보세요!
             </p>
             <div className="flex gap-4 justify-center">
               <Button asChild>
-                <a href="mailto:your.email@example.com">
-                  Get In Touch
+                <a href="mailto:ghals5737@gmail.com">
+                  연락하기
                 </a>
               </Button>
               <Button asChild variant="outline">
                 <a href="/about">
-                  Learn More About Me
+                  더 알아보기
                 </a>
               </Button>
             </div>

@@ -11,7 +11,7 @@ export function searchPosts(query: string): Post[] {
     const searchableText = [
       post.title,
       post.description,
-      post.content,
+      post.body.raw,
       ...(post.tags || []),
       post.category || '',
     ].join(' ').toLowerCase()
@@ -54,7 +54,7 @@ export function getRelatedPosts(currentPost: Post, limit = 3): Post[] {
 
   return posts
     .filter(post => {
-      if (post.id === currentPost.id || !post.published) return false
+      if (post._id === currentPost._id || !post.published) return false
       
       // Prioritize posts with same category
       if (post.category === currentCategory) return true

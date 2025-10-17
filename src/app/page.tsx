@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { ArrowRight, Github, Twitter, Linkedin, Mail } from 'lucide-react'
+import { ArrowRight, Github, Mail } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { posts } from '@/lib/posts'
@@ -13,24 +13,23 @@ export default function Home() {
 
   return (
     <div className="min-h-screen">
-      {/* Hero Section */}
       <section className="py-20 px-4">
         <div className="max-w-4xl mx-auto text-center">
           <div className="mb-8">
             <div className="relative w-32 h-32 mx-auto mb-6">
               <div className="w-full h-full rounded-full bg-gradient-to-br from-primary to-primary/60 flex items-center justify-center text-4xl font-bold text-primary-foreground">
-                Y
+                황
               </div>
             </div>
             <h1 className="text-4xl md:text-6xl font-bold tracking-tight mb-6">
               Hi, I&apos;m{' '}
               <span className="bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
-                Your Name
+                황호민
               </span>
             </h1>
             <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-              Full-stack developer passionate about creating beautiful, performant web applications 
-              with modern technologies.
+              새로운 도전을 좋아하는 백엔드 개발자입니다. 
+              안정적이고 확장 가능한 소프트웨어 아키텍처를 지향합니다.
             </p>
           </div>
 
@@ -51,7 +50,7 @@ export default function Home() {
           {/* Social Links */}
           <div className="flex justify-center space-x-6">
             <a
-              href="https://github.com/yourusername"
+              href="https://github.com/ghals5737"
               className="text-muted-foreground hover:text-primary transition-colors"
               target="_blank"
               rel="noopener noreferrer"
@@ -60,25 +59,7 @@ export default function Home() {
               <span className="sr-only">GitHub</span>
             </a>
             <a
-              href="https://twitter.com/yourhandle"
-              className="text-muted-foreground hover:text-primary transition-colors"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <Twitter className="h-6 w-6" />
-              <span className="sr-only">Twitter</span>
-            </a>
-            <a
-              href="https://linkedin.com/in/yourprofile"
-              className="text-muted-foreground hover:text-primary transition-colors"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <Linkedin className="h-6 w-6" />
-              <span className="sr-only">LinkedIn</span>
-            </a>
-            <a
-              href="mailto:your.email@example.com"
+              href="mailto:ghals5737@gmail.com"
               className="text-muted-foreground hover:text-primary transition-colors"
             >
               <Mail className="h-6 w-6" />
@@ -103,7 +84,7 @@ export default function Home() {
 
             <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
               {recentPosts.map((post) => (
-                <Card key={post.id} className="group hover:shadow-lg transition-shadow">
+                <Card key={post._id} className="group hover:shadow-lg transition-shadow">
                   <CardHeader>
                     {post.image && (
                       <div className="relative aspect-video mb-4 rounded-lg overflow-hidden">
@@ -131,7 +112,7 @@ export default function Home() {
                           day: 'numeric',
                         })}
                       </time>
-                      <span>{Math.ceil(post.content.split(' ').length / 200)} min read</span>
+                      <span>{Math.ceil(post.body.raw.split(' ').length / 200)} min read</span>
                     </div>
                     <Button asChild variant="ghost" className="w-full mt-4">
                       <Link href={`/blog/${post.slug}`}>
@@ -162,8 +143,8 @@ export default function Home() {
             About Me
           </h2>
           <p className="text-xl text-muted-foreground mb-8">
-            I&apos;m a passionate developer with expertise in modern web technologies. 
-            I love building scalable applications and sharing knowledge through writing.
+            백엔드 개발자로서 Java, Spring Boot, Node.js를 주로 사용하며, 
+            안정적이고 확장 가능한 시스템 설계에 관심이 많습니다.
           </p>
           <Button asChild variant="outline" size="lg">
             <Link href="/about">

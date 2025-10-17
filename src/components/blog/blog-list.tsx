@@ -138,7 +138,7 @@ export function BlogList({ searchParams }: BlogListProps) {
       {filteredPosts.length > 0 ? (
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
           {filteredPosts.map((post) => (
-            <article key={post.id} className="group">
+            <article key={post._id} className="group">
               <Link href={`/blog/${post.slug}`} className="block h-full">
                 <div className="rounded-lg border bg-card text-card-foreground shadow-sm transition-all hover:shadow-md h-full flex flex-col">
                   {/* Featured Image */}
@@ -169,7 +169,7 @@ export function BlogList({ searchParams }: BlogListProps) {
                       </div>
                     <div className="flex items-center gap-1">
                       <Clock className="h-3 w-3" />
-                      <span>{Math.ceil(post.content.split(' ').length / 200)} min read</span>
+                      <span>{Math.ceil(post.body.raw.split(' ').length / 200)} min read</span>
                     </div>
                     </div>
 
