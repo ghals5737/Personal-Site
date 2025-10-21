@@ -13,7 +13,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen">
-      <section className="py-20 px-4">
+      {/* <section className="py-20 px-4">
         <div className="max-w-4xl mx-auto text-center">
           <div className="mb-8">
             <div className="relative w-32 h-32 mx-auto mb-6">
@@ -46,8 +46,6 @@ export default function Home() {
               </Link>
             </Button>
           </div>
-
-          {/* Social Links */}
           <div className="flex justify-center space-x-6">
             <a
               href="https://github.com/ghals5737"
@@ -67,10 +65,10 @@ export default function Home() {
             </a>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Recent Posts */}
-      {recentPosts.length > 0 && (
+      {/* {recentPosts.length > 0 && (
         <section className="py-20 px-4 bg-muted/30">
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-12">
@@ -134,10 +132,10 @@ export default function Home() {
             </div>
           </div>
         </section>
-      )}
+      )} */}
 
       {/* About Preview */}
-      <section className="py-20 px-4">
+      {/* <section className="py-20 px-4">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-6">
             About Me
@@ -152,7 +150,7 @@ export default function Home() {
             </Link>
           </Button>
         </div>
-      </section>
+      </section> */}
     </div>
   )
 }

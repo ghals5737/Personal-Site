@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button'
 import { useTheme } from 'next-themes'
 
 const navigation = [
-  { name: 'Home', href: '/' },
+  // { name: 'Home', href: '/' },
   { name: 'Blog', href: '/blog' },
   { name: 'Projects', href: '/projects' },
   { name: 'About', href: '/about' },
