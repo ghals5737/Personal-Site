@@ -1,0 +1,325 @@
+---
+title: "모놀리식에서 MSA로: 전환 여정과 교훈"
+description: "전자상거래 플랫폼을 모놀리식 아키텍처에서 마이크로서비스로 전환한 경험을 공유합니다. 아키텍처 설계, 데이터 분리, 배포 전략 등을 다룹니다."
+date: "2024-02-20"
+tags: ["MSA", "Architecture", "Spring Cloud", "Kubernetes", "DevOps"]
+draft: false
+lang: "ko"
+---
+
+## 왜 MSA로 전환했는가?
+
+우리 팀은 3년간 운영해온 전자상거래 플랫폼을 모놀리식에서 MSA로 전환하기로 결정했습니다. 주요 이유는 다음과 같습니다:
+
+- **배포 시간 증가**: 작은 변경에도 전체 애플리케이션을 재배포 (평균 2시간)
+- **장애 전파**: 한 기능의 문제가 전체 시스템에 영향
+- **기술 스택 제약**: 새로운 기술 도입이 어려움
+- **팀 확장의 어려움**: 코드베이스가 커지면서 협업 복잡도 증가
+
+## 도메인 분리 전략
+
+### 1. 도메인 식별
+
+DDD(Domain-Driven Design) 접근 방식으로 도메인을 식별했습니다.
+
+\`\`\`
+┌─────────────────────────────────────────┐
+│         Monolithic Application          │
+├─────────────────────────────────────────┤
+│  User │ Product │ Order │ Payment       │
+└─────────────────────────────────────────┘
+                    ↓
+┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐
+│  User    │  │ Product  │  │  Order   │  │ Payment  │
+│ Service  │  │ Service  │  │ Service  │  │ Service  │
+└──────────┘  └──────────┘  └──────────┘  └──────────┘
+\`\`\`
+
+### 2. 데이터베이스 분리
+
+가장 어려운 부분은 데이터베이스 분리였습니다.
+
+<Callout type="warning">
+**주의**: 외래 키 제약조건을 제거하면 데이터 정합성 관리가 애플리케이션 레벨로 이동합니다.
+</Callout>
+
+\`\`\`sql
+-- Before: 모놀리식 DB
+CREATE TABLE orders (
+    id BIGINT PRIMARY KEY,
+    user_id BIGINT,
+    product_id BIGINT,
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    FOREIGN KEY (product_id) REFERENCES products(id)
+);
+
+-- After: 마이크로서비스 DB
+-- Order Service DB
+CREATE TABLE orders (
+    id BIGINT PRIMARY KEY,
+    user_id BIGINT,  -- 외래 키 제약 없음
+    product_id BIGINT  -- 외래 키 제약 없음
+);
+\`\`\`
+
+## API Gateway 구축
+
+Spring Cloud Gateway를 사용하여 API Gateway를 구축했습니다.
+
+\`\`\`java
+@Configuration
+public class GatewayConfig {
+    
+    @Bean
+    public RouteLocator customRouteLocator(RouteLocatorBuilder builder) {
+        return builder.routes()
+            .route("user-service", r -> r
+                .path("/api/users/**")
+                .filters(f -> f
+                    .stripPrefix(1)
+                    .circuitBreaker(c -> c
+                        .setName("userServiceCircuitBreaker")
+                        .setFallbackUri("forward:/fallback/users")))
+                .uri("lb://user-service"))
+            
+            .route("product-service", r -> r
+                .path("/api/products/**")
+                .filters(f -> f
+                    .stripPrefix(1)
+                    .addRequestHeader("X-Gateway", "true"))
+                .uri("lb://product-service"))
+            
+            .route("order-service", r -> r
+                .path("/api/orders/**")
+                .filters(f -> f.stripPrefix(1))
+                .uri("lb://order-service"))
+            
+            .build();
+    }
+}
+\`\`\`
+
+## 서비스 간 통신
+
+### 동기 통신: OpenFeign
+
+\`\`\`java
+@FeignClient(name = "product-service")
+public interface ProductClient {
+    
+    @GetMapping("/products/{id}")
+    ProductResponse getProduct(@PathVariable Long id);
+    
+    @PostMapping("/products/{id}/stock/decrease")
+    void decreaseStock(@PathVariable Long id, @RequestParam int quantity);
+}
+
+@Service
+@RequiredArgsConstructor
+public class OrderService {
+    
+    private final ProductClient productClient;
+    
+    public Order createOrder(CreateOrderRequest request) {
+        // 상품 정보 조회
+        ProductResponse product = productClient.getProduct(request.getProductId());
+        
+        // 재고 감소
+        productClient.decreaseStock(request.getProductId(), request.getQuantity());
+        
+        // 주문 생성
+        return orderRepository.save(new Order(request));
+    }
+}
+\`\`\`
+
+### 비동기 통신: Kafka
+
+\`\`\`java
+@Configuration
+public class KafkaConfig {
+    
+    @Bean
+    public NewTopic orderCreatedTopic() {
+        return TopicBuilder.name("order-created")
+            .partitions(3)
+            .replicas(2)
+            .build();
+    }
+}
+
+// Producer (Order Service)
+@Service
+@RequiredArgsConstructor
+public class OrderEventPublisher {
+    
+    private final KafkaTemplate<String, OrderCreatedEvent> kafkaTemplate;
+    
+    public void publishOrderCreated(Order order) {
+        OrderCreatedEvent event = new OrderCreatedEvent(
+            order.getId(),
+            order.getUserId(),
+            order.getTotalAmount()
+        );
+        
+        kafkaTemplate.send("order-created", event);
+    }
+}
+
+// Consumer (Payment Service)
+@Service
+public class OrderEventConsumer {
+    
+    @KafkaListener(topics = "order-created", groupId = "payment-service")
+    public void handleOrderCreated(OrderCreatedEvent event) {
+        // 결제 처리 로직
+        processPayment(event);
+    }
+}
+\`\`\`
+
+## 분산 트랜잭션: Saga 패턴
+
+Choreography 방식의 Saga 패턴을 구현했습니다.
+
+\`\`\`java
+// Order Service
+@Service
+@RequiredArgsConstructor
+public class OrderSagaOrchestrator {
+    
+    private final KafkaTemplate<String, Object> kafkaTemplate;
+    
+    @Transactional
+    public void createOrder(CreateOrderRequest request) {
+        // 1. 주문 생성 (Pending 상태)
+        Order order = orderRepository.save(Order.pending(request));
+        
+        // 2. 재고 확인 이벤트 발행
+        kafkaTemplate.send("check-inventory", new CheckInventoryEvent(order));
+    }
+    
+    @KafkaListener(topics = "inventory-checked")
+    public void handleInventoryChecked(InventoryCheckedEvent event) {
+        if (event.isAvailable()) {
+            // 3. 결제 요청 이벤트 발행
+            kafkaTemplate.send("process-payment", new ProcessPaymentEvent(event.getOrderId()));
+        } else {
+            // 재고 부족 - 주문 취소
+            cancelOrder(event.getOrderId());
+        }
+    }
+    
+    @KafkaListener(topics = "payment-processed")
+    public void handlePaymentProcessed(PaymentProcessedEvent event) {
+        if (event.isSuccess()) {
+            // 4. 주문 확정
+            confirmOrder(event.getOrderId());
+        } else {
+            // 결제 실패 - 보상 트랜잭션
+            compensateOrder(event.getOrderId());
+        }
+    }
+}
+\`\`\`
+
+<Callout type="info">
+**Saga 패턴**: 각 서비스가 로컬 트랜잭션을 실행하고, 이벤트를 발행하여 다음 단계를 트리거합니다. 실패 시 보상 트랜잭션으로 롤백합니다.
+</Callout>
+
+## Kubernetes 배포
+
+\`\`\`yaml
+# order-service-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: order-service
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: order-service
+  template:
+    metadata:
+      labels:
+        app: order-service
+    spec:
+      containers:
+      - name: order-service
+        image: myregistry/order-service:1.0.0
+        ports:
+        - containerPort: 8080
+        env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: "prod"
+        - name: SPRING_DATASOURCE_URL
+          valueFrom:
+            secretKeyRef:
+              name: order-db-secret
+              key: url
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "500m"
+          limits:
+            memory: "1Gi"
+            cpu: "1000m"
+        livenessProbe:
+          httpGet:
+            path: /actuator/health/liveness
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /actuator/health/readiness
+            port: 8080
+          initialDelaySeconds: 20
+          periodSeconds: 5
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: order-service
+spec:
+  selector:
+    app: order-service
+  ports:
+  - port: 80
+    targetPort: 8080
+  type: ClusterIP
+\`\`\`
+
+## 전환 결과
+
+| 지표 | 전환 전 | 전환 후 | 개선율 |
+|------|---------|---------|--------|
+| 배포 시간 | 2시간 | 12분 | 90% ↓ |
+| 장애 복구 시간 | 30분 | 5분 | 83% ↓ |
+| 개발 속도 | 1주/기능 | 2일/기능 | 71% ↑ |
+| 시스템 가용성 | 99.5% | 99.9% | 0.4%p ↑ |
+
+## 교훈
+
+### 1. 점진적 전환이 답이다
+
+빅뱅 방식이 아닌 Strangler Fig 패턴으로 점진적으로 전환했습니다.
+
+### 2. 모니터링이 생명이다
+
+분산 시스템에서는 통합 모니터링이 필수입니다. 우리는 다음을 사용했습니다:
+- **로그 수집**: ELK Stack
+- **메트릭**: Prometheus + Grafana
+- **분산 추적**: Jaeger
+
+### 3. 팀 구조도 변경이 필요하다
+
+Conway's Law에 따라 팀 구조도 서비스 단위로 재편성했습니다.
+
+## 마치며
+
+MSA 전환은 기술적 도전이자 조직적 변화입니다. 우리 팀은 6개월간의 전환 과정을 통해 많은 것을 배웠고, 이제는 더 빠르고 안정적으로 서비스를 제공할 수 있게 되었습니다.
+
+다음 글에서는 MSA 환경에서의 테스트 전략에 대해 다루겠습니다.
+\`\`\`

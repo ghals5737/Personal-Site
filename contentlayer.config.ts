@@ -1,136 +1,95 @@
-import { defineDocumentType, makeSource } from 'contentlayer2/source-files'
-import rehypeHighlight from 'rehype-highlight'
-import rehypeKatex from 'rehype-katex'
-import remarkGfm from 'remark-gfm'
-import remarkMath from 'remark-math'
+import { defineDocumentType, makeSource } from "contentlayer/source-files"
+import rehypePrettyCode from "rehype-pretty-code"
+import rehypeSlug from "rehype-slug"
+import rehypeAutolinkHeadings from "rehype-autolink-headings"
+import remarkGfm from "remark-gfm"
 
 export const Post = defineDocumentType(() => ({
-  name: 'Post',
+  name: "Post",
   filePathPattern: `blog/**/*.mdx`,
-  contentType: 'mdx',
+  contentType: "mdx",
   fields: {
     title: {
-      type: 'string',
-      description: 'The title of the post',
+      type: "string",
       required: true,
     },
     description: {
-      type: 'string',
-      description: 'The description of the post',
+      type: "string",
       required: true,
     },
     date: {
-      type: 'date',
-      description: 'The date of the post',
+      type: "date",
       required: true,
     },
-    published: {
-      type: 'boolean',
-      description: 'Whether the post is published',
+    updated: {
+      type: "date",
       required: false,
-      default: true,
     },
     tags: {
-      type: 'list',
-      of: { type: 'string' },
-      description: 'Tags for the post',
+      type: "list",
+      of: { type: "string" },
+      required: true,
+    },
+    cover: {
+      type: "string",
       required: false,
     },
-    category: {
-      type: 'string',
-      description: 'Category of the post',
-      required: false,
+    draft: {
+      type: "boolean",
+      default: false,
     },
-    image: {
-      type: 'string',
-      description: 'Featured image for the post',
-      required: false,
-    },
-    author: {
-      type: 'string',
-      description: 'Author of the post',
-      required: false,
-      default: 'Your Name',
+    lang: {
+      type: "string",
+      default: "ko",
     },
   },
   computedFields: {
-    url: {
-      type: 'string',
-      resolve: (post) => `/blog/${post._raw.flattenedPath}`,
-    },
     slug: {
-      type: 'string',
-      resolve: (post) => post._raw.flattenedPath,
+      type: "string",
+      resolve: (doc) => doc._raw.flattenedPath.replace("blog/", ""),
     },
-  },
-}))
-
-export const Project = defineDocumentType(() => ({
-  name: 'Project',
-  filePathPattern: `projects/**/*.mdx`,
-  contentType: 'mdx',
-  fields: {
-    title: {
-      type: 'string',
-      description: 'The title of the project',
-      required: true,
-    },
-    description: {
-      type: 'string',
-      description: 'The description of the project',
-      required: true,
-    },
-    date: {
-      type: 'date',
-      description: 'The date of the project',
-      required: true,
-    },
-    published: {
-      type: 'boolean',
-      description: 'Whether the project is published',
-      required: false,
-      default: true,
-    },
-    tags: {
-      type: 'list',
-      of: { type: 'string' },
-      description: 'Tags for the project',
-      required: false,
-    },
-    github: {
-      type: 'string',
-      description: 'GitHub repository URL',
-      required: false,
-    },
-    demo: {
-      type: 'string',
-      description: 'Demo URL',
-      required: false,
-    },
-    image: {
-      type: 'string',
-      description: 'Featured image for the project',
-      required: false,
-    },
-  },
-  computedFields: {
     url: {
-      type: 'string',
-      resolve: (project) => `/projects/${project._raw.flattenedPath}`,
+      type: "string",
+      resolve: (doc) => `/blog/${doc._raw.flattenedPath.replace("blog/", "")}`,
     },
-    slug: {
-      type: 'string',
-      resolve: (project) => project._raw.flattenedPath,
+    readingTime: {
+      type: "number",
+      resolve: (doc) => {
+        const wordsPerMinute = 200
+        const content = doc.body.raw
+        const words = content.split(/\s+/).length
+        return Math.ceil(words / wordsPerMinute)
+      },
     },
   },
 }))
 
 export default makeSource({
-  contentDirPath: './src/content',
-  documentTypes: [Post, Project],
+  contentDirPath: "content",
+  documentTypes: [Post],
   mdx: {
-    remarkPlugins: [remarkGfm, remarkMath],
-    rehypePlugins: [rehypeHighlight, rehypeKatex],
+    remarkPlugins: [remarkGfm],
+    rehypePlugins: [
+      rehypeSlug,
+      [
+        rehypeAutolinkHeadings,
+        {
+          behavior: "wrap",
+          properties: {
+            className: ["anchor"],
+          },
+        },
+      ],
+      [
+        rehypePrettyCode,
+        {
+          theme: {
+            dark: "github-dark",
+            light: "github-light",
+          },
+          keepBackground: false,
+        },
+      ],
+    ],
   },
-  disableImportAliasWarning: true,
 })

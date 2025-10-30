@@ -1,114 +1,77 @@
-import Link from 'next/link'
-import { Github, Twitter, Linkedin, Mail } from 'lucide-react'
+import Link from "next/link"
+import { Github, Linkedin, Mail, Twitter } from "lucide-react"
 
 const socialLinks = [
   {
-    name: 'GitHub',
-    href: 'https://github.com/yourusername',
+    name: "GitHub",
+    href: "https://github.com/username",
     icon: Github,
+    label: "GitHub 프로필",
   },
   {
-    name: 'Twitter',
-    href: 'https://twitter.com/yourhandle',
-    icon: Twitter,
-  },
-  {
-    name: 'LinkedIn',
-    href: 'https://linkedin.com/in/yourprofile',
+    name: "LinkedIn",
+    href: "https://linkedin.com/in/username",
     icon: Linkedin,
+    label: "LinkedIn 프로필",
   },
   {
-    name: 'Email',
-    href: 'mailto:your.email@example.com',
+    name: "Twitter",
+    href: "https://twitter.com/username",
+    icon: Twitter,
+    label: "Twitter 프로필",
+  },
+  {
+    name: "Email",
+    href: "mailto:contact@example.com",
     icon: Mail,
+    label: "이메일 보내기",
   },
 ]
 
+const footerLinks = [
+  { name: "RSS", href: "/feed.xml" },
+  { name: "Sitemap", href: "/sitemap.xml" },
+]
+
 export function Footer() {
+  const currentYear = new Date().getFullYear()
+
   return (
-    <footer className="border-t bg-background">
-      <div className="container mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          {/* About */}
-          <div className="md:col-span-2">
-            <h3 className="text-lg font-semibold mb-4">Your Name</h3>
-            <p className="text-muted-foreground mb-4 max-w-md">
-              Full-stack developer passionate about creating beautiful, 
-              performant web applications with modern technologies.
-            </p>
-            <div className="flex space-x-4">
-              {socialLinks.map((item) => (
+    <footer className="border-t border-border/40 bg-background">
+      <div className="container py-12">
+        <div className="flex flex-col items-center justify-between gap-6 md:flex-row">
+          <div className="flex flex-col items-center gap-4 md:items-start">
+            <p className="text-sm text-muted-foreground">© {currentYear} 황호민. All rights reserved.</p>
+            <div className="flex gap-4">
+              {footerLinks.map((link) => (
                 <Link
-                  key={item.name}
-                  href={item.href}
-                  className="text-muted-foreground hover:text-primary transition-colors"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  key={link.name}
+                  href={link.href}
+                  className="text-sm text-muted-foreground transition-colors hover:text-primary"
                 >
-                  <item.icon className="h-5 w-5" />
-                  <span className="sr-only">{item.name}</span>
+                  {link.name}
                 </Link>
               ))}
             </div>
           </div>
 
-          {/* Quick Links */}
-          <div>
-            <h4 className="text-sm font-semibold mb-4">Quick Links</h4>
-            <ul className="space-y-2">
-              <li>
-                <Link href="/" className="text-muted-foreground hover:text-primary transition-colors">
-                  Home
+          <div className="flex gap-4">
+            {socialLinks.map((link) => {
+              const Icon = link.icon
+              return (
+                <Link
+                  key={link.name}
+                  href={link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-muted-foreground transition-colors hover:text-primary"
+                  aria-label={link.label}
+                >
+                  <Icon className="h-5 w-5" />
                 </Link>
-              </li>
-              <li>
-                <Link href="/blog" className="text-muted-foreground hover:text-primary transition-colors">
-                  Blog
-                </Link>
-              </li>
-              <li>
-                <Link href="/projects" className="text-muted-foreground hover:text-primary transition-colors">
-                  Projects
-                </Link>
-              </li>
-              <li>
-                <Link href="/about" className="text-muted-foreground hover:text-primary transition-colors">
-                  About
-                </Link>
-              </li>
-            </ul>
+              )
+            })}
           </div>
-
-          {/* Resources */}
-          <div>
-            <h4 className="text-sm font-semibold mb-4">Resources</h4>
-            <ul className="space-y-2">
-              <li>
-                <Link href="/blog/rss.xml" className="text-muted-foreground hover:text-primary transition-colors">
-                  RSS Feed
-                </Link>
-              </li>
-              <li>
-                <Link href="/sitemap.xml" className="text-muted-foreground hover:text-primary transition-colors">
-                  Sitemap
-                </Link>
-              </li>
-              <li>
-                <Link href="/robots.txt" className="text-muted-foreground hover:text-primary transition-colors">
-                  Robots.txt
-                </Link>
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        <div className="border-t mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
-          <p className="text-muted-foreground text-sm">
-            © {new Date().getFullYear()} Your Name. All rights reserved.
-          </p>
-          <p className="text-muted-foreground text-sm mt-2 md:mt-0">
-            Built with Next.js, TypeScript, and Tailwind CSS
-          </p>
         </div>
       </div>
     </footer>

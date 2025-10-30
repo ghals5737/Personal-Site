@@ -1,211 +1,170 @@
-import Image from 'next/image'
-import { ExternalLink, Github, Calendar } from 'lucide-react'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
-import { generateMetadata } from '@/components/seo/metadata'
+import type { Metadata } from "next"
+import { ProjectsClient } from "./ProjectsClient"
 
-export const metadata = generateMetadata({
-  title: 'Projects',
-  description: 'A showcase of my recent projects and side projects',
-})
+export const metadata: Metadata = {
+  title: "프로젝트",
+  description: "주요 프로젝트 및 포트폴리오 - 백엔드 시스템, MSA, 성능 최적화 프로젝트",
+}
 
 const projects = [
   {
-    id: '1',
-    title: 'SNSB-3 인지검사 플랫폼',
-    description: '노인 종합 신경심리검사 배터리 3판 디지털 전환 플랫폼. 검사 기록 중심의 도메인 모델 설계, AWS 인프라 아키텍처, Next.js 백오피스 개발',
-    date: '2025-02-01',
-    published: true,
-    tags: ['Kotlin', 'Spring Boot', 'Next.js', 'TypeScript', 'AWS', 'ECS', 'PostgreSQL', 'Terraform'],
-    github: 'https://github.com/ghals5737',
+    id: 1,
+    title: "전자상거래 플랫폼 MSA 전환",
+    description: "모놀리식 아키텍처를 마이크로서비스 아키텍처로 전환하여 배포 시간 90% 단축 및 시스템 확장성 개선",
+    longDescription:
+      "3년간 운영된 전자상거래 플랫폼의 모놀리식 아키텍처를 4개의 마이크로서비스(주문, 결제, 상품, 회원)로 분리했습니다. Spring Cloud Gateway와 Eureka를 활용한 API Gateway를 구축하고, Kafka를 통한 이벤트 기반 비동기 통신을 구현했습니다.",
+    category: "Backend",
+    tags: ["Spring Cloud", "Kubernetes", "Kafka", "MSA", "Docker"],
+    period: "2022.06 - 2023.03",
+    team: "백엔드 4명, 프론트엔드 2명",
+    role: "백엔드 리드 개발자",
+    achievements: [
+      "배포 시간 2시간 → 12분으로 90% 단축",
+      "서비스별 독립 배포로 개발 속도 70% 향상",
+      "Kubernetes 기반 자동 스케일링으로 트래픽 대응력 300% 개선",
+      "장애 격리로 시스템 가용성 99.5% → 99.9% 향상",
+    ],
+    techStack: {
+      backend: ["Spring Boot", "Spring Cloud Gateway", "Eureka", "Kafka"],
+      infrastructure: ["Kubernetes", "Docker", "AWS EKS", "Helm"],
+      monitoring: ["Prometheus", "Grafana", "Jaeger", "ELK Stack"],
+    },
+    github: "https://github.com/username/ecommerce-msa",
     demo: null,
-    image: '/images/projects/snsb3.jpg',
-    slug: 'snsb3-platform',
+    blog: "/blog/msa-migration-journey",
   },
   {
-    id: '2',
-    title: '개발자 플랫폼',
-    description: '외부 개발자들이 Swit API를 손쉽게 활용할 수 있도록 오픈 API 설계 및 SaaS 플랫폼 확장. 서드파티 앱 연동 플랫폼 개발',
-    date: '2023-12-01',
-    published: true,
-    tags: ['Next.js', 'TypeScript', 'OAuth', 'JWT', 'GCP', 'Cloud Run', 'REST API'],
-    github: 'https://github.com/ghals5737',
+    id: 2,
+    title: "대용량 트래픽 처리 시스템 최적화",
+    description: "블랙프라이데이 이벤트 대비 시스템 성능 최적화로 동시 접속자 10만 명 처리 성공",
+    longDescription:
+      "연간 최대 트래픽이 발생하는 블랙프라이데이 이벤트를 대비하여 시스템 전반의 성능을 최적화했습니다. Redis 캐싱, DB 쿼리 최적화, 커넥션 풀 튜닝 등을 통해 API 응답 속도를 3배 개선했습니다.",
+    category: "Performance",
+    tags: ["Redis", "JPA", "Performance", "Monitoring", "Spring Boot"],
+    period: "2021.09 - 2022.02",
+    team: "백엔드 3명",
+    role: "성능 최적화 담당",
+    achievements: [
+      "API 응답 속도 2.3초 → 0.3초로 87% 개선",
+      "Redis 캐싱으로 DB 부하 70% 감소",
+      "JPA N+1 문제 해결로 쿼리 수 99% 감소",
+      "동시 접속자 10만 명 처리 성공 (기존 3만 명)",
+    ],
+    techStack: {
+      backend: ["Spring Boot", "JPA", "Redis", "MySQL"],
+      monitoring: ["Prometheus", "Grafana", "JMeter", "New Relic"],
+      optimization: ["Query Optimization", "Connection Pool Tuning", "Caching Strategy"],
+    },
+    github: "https://github.com/username/performance-optimization",
     demo: null,
-    image: '/images/projects/developer-platform.jpg',
-    slug: 'developer-platform',
+    blog: "/blog/spring-boot-performance-optimization",
   },
   {
-    id: '3',
-    title: '인하우스툴 고도화',
-    description: '테크니컬 라이터를 위한 문서 작업 및 이메일 작성 도구. Flask + Vanilla JS에서 Next.js + TypeScript로 전면 리팩토링',
-    date: '2023-05-01',
-    published: true,
-    tags: ['Next.js', 'TypeScript', 'Flask', 'GCP', 'Cloud Build', 'OAuth'],
-    github: 'https://github.com/ghals5737',
+    id: 3,
+    title: "실시간 알림 시스템 구축",
+    description: "WebSocket 기반 실시간 알림 시스템으로 99.9% 발송 성공률 달성",
+    longDescription:
+      "Spring WebSocket과 STOMP 프로토콜을 활용한 실시간 알림 시스템을 구축했습니다. Redis Pub/Sub을 통해 다중 서버 환경을 지원하고, FCM 연동으로 모바일 푸시 알림도 함께 제공합니다.",
+    category: "Backend",
+    tags: ["WebSocket", "Redis", "FCM", "Spring Boot", "STOMP"],
+    period: "2020.11 - 2021.03",
+    team: "백엔드 2명, 프론트엔드 1명",
+    role: "백엔드 개발자",
+    achievements: [
+      "실시간 알림 발송 성공률 99.9% 달성",
+      "Redis Pub/Sub으로 다중 서버 환경 지원",
+      "FCM 연동으로 웹/모바일 통합 알림 제공",
+      "평균 알림 전송 지연 시간 100ms 이하 유지",
+    ],
+    techStack: {
+      backend: ["Spring Boot", "WebSocket", "STOMP", "Redis Pub/Sub"],
+      mobile: ["FCM", "APNs"],
+      infrastructure: ["AWS", "Load Balancer", "Redis Cluster"],
+    },
+    github: "https://github.com/username/notification-system",
     demo: null,
-    image: '/images/projects/inhouse-tools.jpg',
-    slug: 'inhouse-tools',
+    blog: null,
   },
   {
-    id: '4',
-    title: '차세대 통합 LMS',
-    description: 'MyBatis에서 JPA로 전환, MSA 구조 적용, 쿼리 최적화를 통한 시스템 확장성과 유지보수성 향상',
-    date: '2022-01-01',
-    published: true,
-    tags: ['Java', 'Spring Boot', 'JPA', 'MyBatis', 'AWS', 'CodeDeploy', 'MySQL'],
-    github: 'https://github.com/ghals5737',
+    id: 4,
+    title: "관리자 대시보드 개발",
+    description: "Next.js 기반 실시간 데이터 시각화 관리자 대시보드",
+    longDescription:
+      "Next.js와 TypeScript를 활용하여 실시간 데이터 시각화가 가능한 관리자 대시보드를 개발했습니다. Recharts를 활용한 다양한 차트와 SWR을 통한 효율적인 데이터 페칭을 구현했습니다.",
+    category: "Frontend",
+    tags: ["Next.js", "TypeScript", "React", "Tailwind CSS", "Recharts"],
+    period: "2021.05 - 2021.08",
+    team: "프론트엔드 2명",
+    role: "프론트엔드 개발자",
+    achievements: [
+      "실시간 데이터 업데이트 (SWR 활용)",
+      "10+ 종류의 차트 및 데이터 시각화",
+      "반응형 디자인으로 모바일 지원",
+      "Lighthouse 성능 점수 95+ 달성",
+    ],
+    techStack: {
+      frontend: ["Next.js", "React", "TypeScript", "Tailwind CSS"],
+      visualization: ["Recharts", "D3.js"],
+      state: ["SWR", "Zustand"],
+    },
+    github: "https://github.com/username/admin-dashboard",
+    demo: "https://demo.example.com",
+    blog: null,
+  },
+  {
+    id: 5,
+    title: "CI/CD 파이프라인 구축",
+    description: "GitHub Actions 기반 자동화된 빌드, 테스트, 배포 파이프라인",
+    longDescription:
+      "GitHub Actions를 활용하여 코드 푸시부터 프로덕션 배포까지 완전 자동화된 CI/CD 파이프라인을 구축했습니다. 테스트 자동화, 코드 품질 검사, 자동 배포를 통해 개발 생산성을 크게 향상시켰습니다.",
+    category: "DevOps",
+    tags: ["GitHub Actions", "Docker", "Kubernetes", "ArgoCD", "Terraform"],
+    period: "2022.01 - 2022.04",
+    team: "DevOps 2명, 백엔드 3명",
+    role: "DevOps 엔지니어",
+    achievements: [
+      "배포 시간 1시간 → 5분으로 단축",
+      "테스트 자동화로 버그 발견율 80% 향상",
+      "GitOps 방식으로 배포 이력 추적 가능",
+      "롤백 시간 30분 → 2분으로 단축",
+    ],
+    techStack: {
+      ci: ["GitHub Actions", "Jest", "JUnit", "SonarQube"],
+      cd: ["ArgoCD", "Helm", "Kubernetes"],
+      infrastructure: ["Terraform", "AWS", "Docker"],
+    },
+    github: "https://github.com/username/cicd-pipeline",
     demo: null,
-    image: '/images/projects/lms.jpg',
-    slug: 'nextgen-lms',
+    blog: null,
+  },
+  {
+    id: 6,
+    title: "API Gateway 및 인증 시스템",
+    description: "Spring Cloud Gateway 기반 API Gateway 및 JWT 인증 시스템",
+    longDescription:
+      "마이크로서비스 환경에서 중앙화된 인증/인가를 처리하는 API Gateway를 구축했습니다. JWT 토큰 기반 인증과 Redis를 활용한 토큰 관리로 보안성과 성능을 동시에 확보했습니다.",
+    category: "Backend",
+    tags: ["Spring Cloud Gateway", "JWT", "Redis", "Security", "OAuth2"],
+    period: "2022.09 - 2022.12",
+    team: "백엔드 3명",
+    role: "백엔드 개발자",
+    achievements: [
+      "중앙화된 인증으로 보안 정책 일관성 확보",
+      "Redis 기반 토큰 블랙리스트로 즉시 로그아웃 구현",
+      "Rate Limiting으로 API 남용 방지",
+      "OAuth2 소셜 로그인 연동 (Google, Kakao, Naver)",
+    ],
+    techStack: {
+      backend: ["Spring Cloud Gateway", "Spring Security", "JWT", "Redis"],
+      auth: ["OAuth2", "Social Login"],
+      monitoring: ["Prometheus", "Grafana"],
+    },
+    github: "https://github.com/username/api-gateway",
+    demo: null,
+    blog: null,
   },
 ]
 
 export default function ProjectsPage() {
-  const publishedProjects = projects.filter(project => project.published)
-
-  return (
-    <div className="max-w-6xl mx-auto px-4 py-8">
-      {/* Header */}
-      <header className="mb-12">
-        <h1 className="text-4xl font-bold tracking-tight mb-4">Projects</h1>
-        <p className="text-xl text-muted-foreground">
-          백엔드 개발자로서 참여한 주요 프로젝트들을 소개합니다
-        </p>
-      </header>
-
-      {/* Projects Grid */}
-      {publishedProjects.length > 0 ? (
-        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-          {publishedProjects.map((project) => (
-            <Card key={project.id} className="group hover:shadow-lg transition-shadow">
-              {/* Featured Image */}
-              <div className="relative aspect-video rounded-t-lg overflow-hidden bg-gradient-to-br from-primary/20 to-primary/5">
-                {project.image ? (
-                  <Image
-                    src={project.image}
-                    alt={project.title}
-                    fill
-                    className="object-cover transition-transform group-hover:scale-105"
-                  />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center">
-                    <div className="text-4xl font-bold text-primary/60">
-                      {project.title.charAt(0)}
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              <CardHeader>
-                <div className="flex items-start justify-between gap-4">
-                  <div className="flex-1">
-                    <CardTitle className="group-hover:text-primary transition-colors line-clamp-2">
-                      {project.title}
-                    </CardTitle>
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground mt-2">
-                      <Calendar className="h-3 w-3" />
-                      <time>
-                        {new Date(project.date).toLocaleDateString('en-US', {
-                          year: 'numeric',
-                          month: 'short',
-                        })}
-                      </time>
-                    </div>
-                  </div>
-                </div>
-              </CardHeader>
-
-              <CardContent>
-                <CardDescription className="line-clamp-3 mb-4">
-                  {project.description}
-                </CardDescription>
-
-                {/* Tags */}
-                {project.tags && project.tags.length > 0 && (
-                  <div className="flex flex-wrap gap-1 mb-4">
-                    {project.tags.slice(0, 4).map((tag) => (
-                      <Badge key={tag} variant="outline" className="text-xs">
-                        {tag}
-                      </Badge>
-                    ))}
-                    {project.tags.length > 4 && (
-                      <Badge variant="outline" className="text-xs">
-                        +{project.tags.length - 4} more
-                      </Badge>
-                    )}
-                  </div>
-                )}
-
-                {/* Links */}
-                <div className="flex gap-2">
-                  {project.demo && (
-                    <Button asChild size="sm" variant="default">
-                      <a
-                        href={project.demo}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center gap-1"
-                      >
-                        <ExternalLink className="h-3 w-3" />
-                        Demo
-                      </a>
-                    </Button>
-                  )}
-                  {project.github && (
-                    <Button asChild size="sm" variant="outline">
-                      <a
-                        href={project.github}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center gap-1"
-                      >
-                        <Github className="h-3 w-3" />
-                        Code
-                      </a>
-                    </Button>
-                  )}
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      ) : (
-        <div className="text-center py-12">
-          <div className="text-muted-foreground">
-            <div className="h-12 w-12 mx-auto mb-4 rounded-full bg-muted flex items-center justify-center">
-              <span className="text-2xl">🚀</span>
-            </div>
-            <h3 className="text-lg font-medium mb-2">No projects yet</h3>
-            <p>Projects will be displayed here once they&apos;re published.</p>
-          </div>
-        </div>
-      )}
-
-      {/* Call to Action */}
-      <section className="mt-16 text-center">
-        <Card className="bg-muted/30">
-          <CardContent className="pt-8">
-            <h2 className="text-2xl font-bold mb-4">프로젝트 협업을 원하시나요?</h2>
-            <p className="text-muted-foreground mb-6">
-              새로운 기회와 협업에 항상 관심이 있습니다. 
-              함께 일할 수 있는 방법을 논의해보세요!
-            </p>
-            <div className="flex gap-4 justify-center">
-              <Button asChild>
-                <a href="mailto:ghals5737@gmail.com">
-                  연락하기
-                </a>
-              </Button>
-              <Button asChild variant="outline">
-                <a href="/about">
-                  더 알아보기
-                </a>
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
-      </section>
-    </div>
-  )
+  return <ProjectsClient projects={projects} />
 }
