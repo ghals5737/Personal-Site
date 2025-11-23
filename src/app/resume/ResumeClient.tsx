@@ -1,317 +1,165 @@
 "use client"
 
-import { Download, Mail, Github, Linkedin, ExternalLink } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { Card } from "@/components/ui/card"
+import { Mail, Github, Phone } from "lucide-react"
 
-const skills = {
-  backend: ["Java", "Kotlin", "Spring Boot", "Spring Cloud", "JPA/Hibernate", "MySQL", "PostgreSQL", "Redis"],
-  frontend: ["Next.js", "React", "TypeScript", "Tailwind CSS", "Zustand", "React Query"],
-  devops: ["AWS (EC2, RDS, S3, CloudFront)", "GCP", "Docker", "Kubernetes", "GitHub Actions", "Jenkins"],
-  tools: ["Git", "Gradle", "Maven", "IntelliJ IDEA", "VS Code", "Postman", "Jira"],
-}
+const summaryBullets = [
+  "Java/Kotlin 기반 Spring 백엔드 개발 4년 경험",
+  "리포트 생성 9초→1.5초, 파일 업로드 1.5초→0.5초 등 성능 최적화·안정화 경험",
+  "Flask + Vanilla JS 레거시를 Next.js + TypeScript로 재구축한 풀스택 개선 경험",
+  "AWS ECS/ALB, CodeDeploy, GitHub Actions 기반 무중단 배포 및 비용 최적화 경험",
+]
 
 const experiences = [
   {
-    company: "테크 스타트업",
-    position: "시니어 백엔드 개발자",
-    period: "2022.03 - 현재",
-    description: "전자상거래 플랫폼 백엔드 시스템 설계 및 개발",
+    company: "휴브알엔씨",
+    team: "IT개발실",
+    role: "풀스택 개발자",
+    period: "2025.01 - 재직중",
     achievements: [
-      "MSA 아키텍처 전환으로 배포 시간 90% 단축 (2시간 → 12분)",
-      "Redis 캐싱 전략 도입으로 API 응답 속도 3배 개선",
-      "Spring Batch 기반 정산 시스템 구축 (일 100만 건 처리)",
-      "Kotlin + Coroutine 도입으로 동시성 처리 성능 향상",
+      "SNSB-3 인지원사 채점·운영 플랫폼 백엔드(Kotlin/Spring Boot)와 백오피스(Next.js) 설계·개발",
+      "리포트 생성 파이프라인에 MQ-워크 구조 도입 → 생성 시간 9초→1.5초(83% 단축), 피크 타임 안정화",
+      "중복·비효율 API 정리와 비동기 페이징 적용으로 핵심 API 응답 체감 2~3배 개선",
+      "AWS ECS+ALB, Nginx, GitHub Actions→GHCR/ECS 기반 무중단 배포 인프라 구축",
     ],
-    tags: ["Spring Boot", "Kotlin", "MSA", "Redis", "Kubernetes"],
   },
   {
-    company: "IT 서비스 기업",
-    position: "백엔드 개발자",
-    period: "2020.06 - 2022.02",
-    description: "B2B SaaS 플랫폼 백엔드 개발 및 유지보수",
+    company: "스윗코리아",
+    team: "User Relations Team",
+    role: "백엔드 개발자",
+    period: "2023.05 - 2024.06 (1년 2개월, 경영 악화로 인한 퇴사)",
     achievements: [
-      "RESTful API 설계 및 구현 (50+ 엔드포인트)",
-      "JPA N+1 문제 해결로 쿼리 성능 80% 개선",
-      "Spring Security + JWT 기반 인증/인가 시스템 구축",
-      "테스트 커버리지 70% 달성 (JUnit5, Mockito)",
+      "Jira·Confluence 등 서드파티 연동 플러그인 및 오픈 API 설계·개발",
+      "외부 연동 API 병목 구간 프로파일링 후 비동기/논블로킹 구조로 전환 → 10초→1.8초 응답 속도 개선",
+      "OAuth + JWT 기반 통합 인증·권한 관리 기능과 백오피스 관리 UI 구현",
+      "Flask + Vanilla JS 레거시 백오피스를 Next.js + TypeScript로 재구축하여 모듈화·유지보수성 향상",
+      "사내 내부 로그를 ETL·마스킹 처리해 고객사가 열람 가능한 감사 로그 모니터링 플러그인 개발",
     ],
-    tags: ["Spring Boot", "Java", "JPA", "MySQL", "AWS"],
   },
   {
-    company: "스타트업",
-    position: "풀스택 개발자",
-    period: "2019.03 - 2020.05",
-    description: "소셜 커머스 플랫폼 풀스택 개발",
+    company: "웅진씽크빅",
+    team: "차세대 LMS 개발팀",
+    role: "백엔드 개발자",
+    period: "2021.08 - 2023.04 (1년 9개월)",
     achievements: [
-      "Next.js 기반 SSR 적용으로 SEO 최적화 및 초기 로딩 속도 40% 개선",
-      "관리자 대시보드 개발 (React, TypeScript)",
-      "결제 시스템 연동 (토스페이먼츠, 카카오페이)",
-      "CI/CD 파이프라인 구축 (GitHub Actions, Docker)",
+      "Spring Boot + JPA 기반 차세대 통합 LMS 백엔드 개발",
+      "주요 조회 커리 익명성 설계·파티셔닝·EXPLAIN 분석으로 기준 조회 지연 약 50% 개선",
+      "회원권 실시간 배치 동시성 문제 분석 후 비관적 Lock과 트랜잭션 적용으로 데이터 정합성 확보",
+      "AWS CodeDeploy 기반 CI/CD 파이프라인 구축으로 수동 FTP 배포 제거 및 배포 안정성 향상",
     ],
-    tags: ["Spring Boot", "Next.js", "React", "TypeScript", "Docker"],
   },
 ]
 
-const projects = [
+const educationActivities = [
   {
-    title: "전자상거래 플랫폼 MSA 전환",
-    period: "2022.06 - 2023.03",
-    description: "모놀리식 아키텍처를 MSA로 전환하여 확장성과 배포 효율성 개선",
-    achievements: [
-      "주문, 결제, 상품, 회원 도메인 분리 (4개 마이크로서비스)",
-      "Spring Cloud Gateway, Eureka 기반 API Gateway 구축",
-      "Kafka를 활용한 이벤트 기반 비동기 통신 구현",
-      "Kubernetes 기반 컨테이너 오케스트레이션",
-    ],
-    tags: ["MSA", "Spring Cloud", "Kafka", "Kubernetes"],
-    links: [{ label: "기술 블로그", url: "/blog/msa-migration" }],
+    period: "2013.03 - 2021.02",
+    title: "충북대학교 정보통신공학과",
+    description: "학사 졸업",
   },
   {
-    title: "대용량 트래픽 처리 시스템 최적화",
-    period: "2021.09 - 2022.02",
-    description: "블랙프라이데이 이벤트 대비 시스템 성능 최적화",
-    achievements: [
-      "Redis 캐싱 레이어 도입 (Look-aside 패턴)",
-      "DB 커넥션 풀 튜닝 및 쿼리 최적화",
-      "부하 테스트 (JMeter) 및 모니터링 (Prometheus, Grafana)",
-      "동시 접속자 10만 명 처리 성공",
-    ],
-    tags: ["Redis", "Performance", "Monitoring"],
-    links: [{ label: "GitHub", url: "https://github.com/username/project" }],
+    period: "2019.07 - 2019.09",
+    title: "네이버 부스트캠프",
+    description: "웹·모바일 개발 과정 수료",
   },
   {
-    title: "실시간 알림 시스템 구축",
-    period: "2020.11 - 2021.03",
-    description: "WebSocket 기반 실시간 알림 시스템 개발",
-    achievements: [
-      "Spring WebSocket + STOMP 프로토콜 구현",
-      "Redis Pub/Sub을 활용한 다중 서버 환경 지원",
-      "FCM 연동으로 모바일 푸시 알림 지원",
-      "알림 발송 성공률 99.9% 달성",
-    ],
-    tags: ["WebSocket", "Redis", "FCM"],
-    links: [],
+    period: "2020.01 - 2021.02",
+    title: "삼성 청년 소프트웨어 아카데미(SSAFY)",
+    description: "자율·공통 프로젝트 우수상 수상 경험",
   },
 ]
 
-const education = [
+const contactInfo = [
   {
-    institution: "삼성 청년 SW 아카데미 (SSAFY)",
-    degree: "9기 수료 (Excellence 수상)",
-    period: "2023.01 - 2023.12",
-    description: "1년 과정 소프트웨어 교육 프로그램 수료",
+    label: "010-5493-5737",
+    href: "tel:01054935737",
+    icon: Phone,
   },
   {
-    institution: "네이버 부스트캠프",
-    degree: "웹·모바일 개발 과정 수료",
-    period: "2022.07 - 2022.12",
-    description: "6개월 집중 교육 프로그램",
+    label: "ghals5737@gmail.com",
+    href: "mailto:ghals5737@gmail.com",
+    icon: Mail,
+  },
+  {
+    label: "github.com/ghals5737",
+    href: "https://github.com/ghals5737",
+    icon: Github,
   },
 ]
 
 export default function ResumeClient() {
   return (
-    <div className="container py-12">
-      <div className="mx-auto max-w-4xl">
-        {/* Print Button */}
-        <div className="no-print mb-8 flex justify-end">
-          <Button onClick={() => window.print()} size="lg">
-            <Download className="mr-2 h-4 w-4" />
-            PDF 다운로드
-          </Button>
-        </div>
-
-        {/* Hero Section */}
-        <section className="mb-12 print-break-inside-avoid">
-          <h1 className="mb-2 text-4xl font-bold">황호민</h1>
-          <p className="mb-4 text-xl text-muted-foreground">백엔드 중심 풀스택 개발자</p>
-          <p className="mb-6 text-pretty leading-relaxed">
-            5년차 백엔드 개발자로, Java/Kotlin과 Spring Boot를 활용한 확장 가능한 시스템 설계 및 개발에 강점을 가지고
-            있습니다. MSA 전환, 대용량 트래픽 처리, 성능 최적화 경험을 바탕으로 비즈니스 가치를 창출하는 기술 솔루션을
-            제공합니다.
-          </p>
-
-          {/* Contact Info */}
-          <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
-            <a
-              href="mailto:contact@example.com"
-              className="flex items-center gap-2 transition-colors hover:text-primary"
-            >
-              <Mail className="h-4 w-4" />
-              contact@example.com
-            </a>
-            <a
-              href="https://github.com/username"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 transition-colors hover:text-primary"
-            >
-              <Github className="h-4 w-4" />
-              github.com/username
-            </a>
-            <a
-              href="https://linkedin.com/in/username"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 transition-colors hover:text-primary"
-            >
-              <Linkedin className="h-4 w-4" />
-              linkedin.com/in/username
-            </a>
-          </div>
-        </section>
-
-        {/* Skills Section */}
-        <section className="mb-12 print-break-inside-avoid">
-          <h2 className="mb-6 text-2xl font-bold">핵심 기술</h2>
-          <div className="space-y-4">
-            <div>
-              <h3 className="mb-2 text-sm font-semibold text-muted-foreground">Backend</h3>
-              <div className="flex flex-wrap gap-2">
-                {skills.backend.map((skill) => (
-                  <Badge key={skill} variant="secondary">
-                    {skill}
-                  </Badge>
-                ))}
-              </div>
+    <div className="bg-white text-slate-900 transition-colors dark:bg-slate-950 dark:text-slate-100">
+      <div className="container py-12">
+        <div className="mx-auto max-w-3xl space-y-12">
+          <section className="space-y-4">
+            <div className="space-y-1">
+              <p className="text-sm font-medium uppercase tracking-wide text-muted-foreground">Backend Developer</p>
+              <h1 className="text-4xl font-semibold">황호민</h1>
+              <p className="text-base text-muted-foreground">백엔드 개발자</p>
             </div>
-            <div>
-              <h3 className="mb-2 text-sm font-semibold text-muted-foreground">Frontend</h3>
-              <div className="flex flex-wrap gap-2">
-                {skills.frontend.map((skill) => (
-                  <Badge key={skill} variant="secondary">
-                    {skill}
-                  </Badge>
-                ))}
-              </div>
+            <div className="flex flex-col gap-1 text-sm text-muted-foreground">
+              {contactInfo.map((item) => (
+                <a
+                  key={item.label}
+                  href={item.href}
+                  className="flex items-center gap-2 hover:text-foreground"
+                  target={item.href.startsWith("http") ? "_blank" : undefined}
+                  rel={item.href.startsWith("http") ? "noopener noreferrer" : undefined}
+                >
+                  <item.icon className="h-4 w-4" />
+                  {item.label}
+                </a>
+              ))}
             </div>
-            <div>
-              <h3 className="mb-2 text-sm font-semibold text-muted-foreground">DevOps & Infrastructure</h3>
-              <div className="flex flex-wrap gap-2">
-                {skills.devops.map((skill) => (
-                  <Badge key={skill} variant="secondary">
-                    {skill}
-                  </Badge>
-                ))}
-              </div>
-            </div>
-            <div>
-              <h3 className="mb-2 text-sm font-semibold text-muted-foreground">Tools</h3>
-              <div className="flex flex-wrap gap-2">
-                {skills.tools.map((skill) => (
-                  <Badge key={skill} variant="secondary">
-                    {skill}
-                  </Badge>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
+          </section>
 
-        {/* Experience Section */}
-        <section className="mb-12">
-          <h2 className="mb-6 text-2xl font-bold">경력</h2>
-          <div className="space-y-8">
-            {experiences.map((exp, index) => (
-              <Card key={index} className="print-break-inside-avoid p-6">
-                <div className="mb-4">
-                  <div className="mb-1 flex flex-wrap items-start justify-between gap-2">
-                    <h3 className="text-xl font-semibold">{exp.company}</h3>
+          <section className="space-y-3">
+            <h2 className="text-2xl font-semibold">자기소개</h2>
+            <ul className="list-disc space-y-2 pl-5 text-sm text-muted-foreground">
+              {summaryBullets.map((bullet) => (
+                <li key={bullet}>{bullet}</li>
+              ))}
+            </ul>
+          </section>
+
+          <section className="space-y-6">
+            <h2 className="text-2xl font-semibold">경력</h2>
+            <div className="space-y-8 divide-y divide-border">
+              {experiences.map((exp) => (
+                <div key={exp.company} className="pt-6 first:pt-0">
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <div>
+                      <h3 className="text-xl font-medium">{exp.company}</h3>
+                      <p className="text-sm text-muted-foreground">
+                        {exp.team} | {exp.role}
+                      </p>
+                    </div>
                     <span className="text-sm text-muted-foreground">{exp.period}</span>
                   </div>
-                  <p className="mb-2 font-medium text-primary">{exp.position}</p>
-                  <p className="text-sm text-muted-foreground">{exp.description}</p>
-                </div>
-
-                <ul className="mb-4 space-y-2 text-sm">
-                  {exp.achievements.map((achievement, i) => (
-                    <li key={i} className="flex gap-2">
-                      <span className="text-primary">•</span>
-                      <span>{achievement}</span>
-                    </li>
-                  ))}
-                </ul>
-
-                <div className="flex flex-wrap gap-2">
-                  {exp.tags.map((tag) => (
-                    <Badge key={tag} variant="outline">
-                      {tag}
-                    </Badge>
-                  ))}
-                </div>
-              </Card>
-            ))}
-          </div>
-        </section>
-
-        {/* Projects Section */}
-        <section className="mb-12">
-          <h2 className="mb-6 text-2xl font-bold">주요 프로젝트</h2>
-          <div className="space-y-8">
-            {projects.map((project, index) => (
-              <Card key={index} className="print-break-inside-avoid p-6">
-                <div className="mb-4">
-                  <div className="mb-1 flex flex-wrap items-start justify-between gap-2">
-                    <h3 className="text-xl font-semibold">{project.title}</h3>
-                    <span className="text-sm text-muted-foreground">{project.period}</span>
-                  </div>
-                  <p className="text-sm text-muted-foreground">{project.description}</p>
-                </div>
-
-                <ul className="mb-4 space-y-2 text-sm">
-                  {project.achievements.map((achievement, i) => (
-                    <li key={i} className="flex gap-2">
-                      <span className="text-primary">•</span>
-                      <span>{achievement}</span>
-                    </li>
-                  ))}
-                </ul>
-
-                <div className="mb-4 flex flex-wrap gap-2">
-                  {project.tags.map((tag) => (
-                    <Badge key={tag} variant="outline">
-                      {tag}
-                    </Badge>
-                  ))}
-                </div>
-
-                {project.links.length > 0 && (
-                  <div className="flex flex-wrap gap-3">
-                    {project.links.map((link, i) => (
-                      <a
-                        key={i}
-                        href={link.url}
-                        className="flex items-center gap-1 text-sm text-primary transition-colors hover:underline"
-                      >
-                        {link.label}
-                        <ExternalLink className="h-3 w-3" />
-                      </a>
+                  <ul className="mt-4 list-disc space-y-2 pl-5 text-sm text-muted-foreground">
+                    {exp.achievements.map((achievement) => (
+                      <li key={achievement}>{achievement}</li>
                     ))}
-                  </div>
-                )}
-              </Card>
-            ))}
-          </div>
-        </section>
-
-        {/* Education Section */}
-        <section className="mb-12 print-break-inside-avoid">
-          <h2 className="mb-6 text-2xl font-bold">교육 및 수상</h2>
-          <div className="space-y-6">
-            {education.map((edu, index) => (
-              <div key={index}>
-                <div className="mb-1 flex flex-wrap items-start justify-between gap-2">
-                  <h3 className="font-semibold">{edu.institution}</h3>
-                  <span className="text-sm text-muted-foreground">{edu.period}</span>
+                  </ul>
                 </div>
-                <p className="mb-1 text-sm font-medium text-primary">{edu.degree}</p>
-                <p className="text-sm text-muted-foreground">{edu.description}</p>
-              </div>
-            ))}
-          </div>
-        </section>
+              ))}
+            </div>
+          </section>
+
+          <section className="space-y-4">
+            <h2 className="text-2xl font-semibold">교육 및 활동</h2>
+            <div className="space-y-3">
+              {educationActivities.map((edu) => (
+                <div key={edu.title} className="flex flex-col gap-1">
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <p className="font-medium">{edu.title}</p>
+                    <span className="text-sm text-muted-foreground">{edu.period}</span>
+                  </div>
+                  <p className="text-sm text-muted-foreground">{edu.description}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+        </div>
       </div>
     </div>
   )

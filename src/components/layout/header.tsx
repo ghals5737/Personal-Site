@@ -4,17 +4,20 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { cn } from "@/lib/utils"
-import { Search } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { ChevronDown, Github } from "lucide-react"
 
-const navigation = [
-  { name: "Home", href: "/", label: "홈" },
-  { name: "Resume", href: "/resume", label: "이력서" },
-  { name: "Blog", href: "/blog", label: "블로그" },
-  { name: "Projects", href: "/projects", label: "프로젝트" },
-  { name: "Uses", href: "/uses", label: "Uses" },
-  { name: "Now", href: "/now", label: "Now" },
-  { name: "Contact", href: "/contact", label: "연락" },
+const primaryNavigation = [
+  { href: "/blog", label: "블로그" },
+  { href: "/resume", label: "이력서" },
+  { href: "/contact", label: "연락" },
+]
+
+const tagCategories = [
+  { href: "/blog/tag/architecture", label: "아키텍처" },
+  { href: "/blog/tag/spring", label: "Spring Boot" },
+  { href: "/blog/tag/frontend", label: "프론트엔드" },
+  { href: "/blog/tag/devops", label: "DevOps" },
+  { href: "/blog/tag/career", label: "커리어" },
 ]
 
 export function Header() {
@@ -23,13 +26,11 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <nav className="container flex h-16 items-center justify-between">
-        <Link href="/" className="text-lg font-semibold tracking-tight transition-colors hover:text-primary">
-          황호민
-        </Link>
+        <span className="text-lg font-semibold tracking-tight">ghals5737</span>
 
         <div className="flex items-center gap-6">
           <ul className="hidden items-center gap-6 md:flex">
-            {navigation.map((item) => (
+            {primaryNavigation.map((item) => (
               <li key={item.href}>
                 <Link
                   href={item.href}
@@ -42,14 +43,44 @@ export function Header() {
                 </Link>
               </li>
             ))}
+            <li className="relative">
+              <div className="group">
+                <button
+                  type="button"
+                  className="flex items-center text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >
+                  태그
+                  <ChevronDown className="ml-1 h-4 w-4 transition-transform group-hover:-scale-y-100" />
+                </button>
+                <div className="invisible absolute left-1/2 top-full z-50 mt-3 w-48 -translate-x-1/2 rounded-lg border bg-popover p-2 opacity-0 shadow-lg transition-all duration-150 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100">
+                  <div className="flex flex-col gap-1">
+                    {tagCategories.map((tag) => (
+                      <Link
+                        key={tag.href}
+                        href={tag.href}
+                        className="rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                      >
+                        #{tag.label}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </li>
           </ul>
 
-          <div className="flex items-center gap-2">
-            <Button asChild variant="ghost" size="icon" aria-label="검색">
-              <Link href="/search">
-                <Search className="h-5 w-5" />
-              </Link>
-            </Button>
+          <div className="flex items-center gap-3">
+            <a
+              href="https://github.com/ghals5737"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-muted-foreground transition-colors hover:text-primary"
+              aria-label="GitHub"
+            >
+              <Github className="h-5 w-5" />
+            </a>
             <ThemeToggle />
           </div>
         </div>

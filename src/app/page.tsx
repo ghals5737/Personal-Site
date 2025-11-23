@@ -77,44 +77,41 @@ export default function HomePage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <div className="min-h-screen">
         {/* Hero Section */}
-        <section className="bg-gradient-to-b from-purple-50 to-white dark:from-purple-950/20 dark:to-background">
-          <div className="container py-24 md:py-32">
-            <div className="mx-auto max-w-3xl text-center">
-              <p className="mb-4 text-lg font-medium text-primary">안녕하세요,</p>
-
-              <h1 className="mb-6 text-balance text-5xl font-bold tracking-tight sm:text-6xl md:text-7xl">
-                황호민입니다
-              </h1>
-
-              <p className="mb-4 text-xl font-semibold text-foreground sm:text-2xl">백엔드 중심 풀스택 엔지니어</p>
-
-              <p className="mb-10 text-pretty text-base text-muted-foreground sm:text-lg">
-                Java/Kotlin/Spring Boot와 Next.js/TypeScript를 활용하여 확장 가능한 웹 애플리케이션을
-                <br className="hidden sm:inline" />
-                개발합니다. 성능 최적화와 클린 아키텍처에 관심이 많습니다.
-              </p>
+        <section className="border-b bg-background">
+          <div className="container py-20 md:py-24">
+            <div className="mx-auto max-w-3xl space-y-8 text-center">
+              <div className="space-y-3">
+                <p className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">Portfolio</p>
+                <h1 className="text-balance text-4xl font-semibold tracking-tight text-foreground sm:text-5xl md:text-6xl">
+                  황호민 · 백엔드 중심 풀스택 엔지니어
+                </h1>
+                <p className="text-base leading-relaxed text-muted-foreground sm:text-lg">
+                  Java/Kotlin과 Spring Boot를 중심으로 안정적인 웹 서비스를 구축합니다. 단순하고 예측 가능한 구조,
+                  유지보수하기 좋은 인터페이스를 지향하며 Next.js/TypeScript로 제품 경험을 다듬습니다.
+                </p>
+              </div>
 
               <div className="flex flex-col items-center justify-center gap-3 sm:flex-row">
                 <Button asChild size="lg" className="w-full sm:w-auto">
                   <Link href="/resume">
                     <FileText className="mr-2 h-4 w-4" />
-                    이력서 보기
+                    이력서
                   </Link>
                 </Button>
-                <Button asChild variant="outline" size="lg" className="w-full sm:w-auto bg-transparent">
+                <Button asChild variant="outline" size="lg" className="w-full sm:w-auto">
                   <Link href="/blog">
                     <BookOpen className="mr-2 h-4 w-4" />
-                    블로그 가기
+                    블로그
                   </Link>
                 </Button>
               </div>
 
-              <div className="flex items-center justify-center gap-4">
+              <div className="flex items-center justify-center gap-4 text-sm text-muted-foreground">
                 <a
                   href="https://github.com/username"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-muted-foreground transition-colors hover:text-primary"
+                  className="transition-colors hover:text-foreground"
                   aria-label="GitHub"
                 >
                   <Github className="h-5 w-5" />
@@ -123,14 +120,14 @@ export default function HomePage() {
                   href="https://linkedin.com/in/username"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-muted-foreground transition-colors hover:text-primary"
+                  className="transition-colors hover:text-foreground"
                   aria-label="LinkedIn"
                 >
                   <Linkedin className="h-5 w-5" />
                 </a>
                 <a
                   href="mailto:contact@example.com"
-                  className="text-muted-foreground transition-colors hover:text-primary"
+                  className="transition-colors hover:text-foreground"
                   aria-label="Email"
                 >
                   <Mail className="h-5 w-5" />
@@ -170,67 +167,54 @@ export default function HomePage() {
         {/* Featured Projects Section */}
         <section className="border-t bg-background py-16">
           <div className="container">
-            <div className="mx-auto max-w-6xl">
-              <div className="mb-10 flex items-center justify-between">
-                <h2 className="text-3xl font-bold">주요 프로젝트</h2>
-                <Button asChild variant="link" className="text-primary">
+            <div className="mx-auto max-w-5xl space-y-8">
+              <div className="flex items-center justify-between">
+                <h2 className="text-3xl font-semibold">주요 프로젝트</h2>
+                <Button asChild variant="ghost" className="h-8 px-3 text-sm text-muted-foreground">
                   <Link href="/projects">
-                    모든 프로젝트 보기
+                    전체 보기
                     <ArrowRight className="ml-1 h-4 w-4" />
                   </Link>
                 </Button>
               </div>
-              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                <Link
-                  href="/projects"
-                  className="group overflow-hidden rounded-lg border bg-card transition-all hover:shadow-lg"
-                >
-                  <div className="aspect-video w-full overflow-hidden bg-gradient-to-br from-purple-500 to-pink-500">
-                    <img
-                      src="/analytics-dashboard.png"
-                      alt="실시간 분석 대시보드"
-                      className="h-full w-full object-cover transition-transform group-hover:scale-105"
-                    />
-                  </div>
-                  <div className="p-5">
-                    <h3 className="mb-2 text-lg font-semibold">실시간 분석 대시보드</h3>
-                    <p className="text-sm text-muted-foreground">대용량 데이터 처리를 위한 실시간 분석 시스템</p>
-                  </div>
-                </Link>
-
-                <Link
-                  href="/projects"
-                  className="group overflow-hidden rounded-lg border bg-card transition-all hover:shadow-lg"
-                >
-                  <div className="aspect-video w-full overflow-hidden bg-gradient-to-br from-blue-500 to-cyan-500">
-                    <img
-                      src="/video-conference-meeting-interface.jpg"
-                      alt="화상 회의 플랫폼"
-                      className="h-full w-full object-cover transition-transform group-hover:scale-105"
-                    />
-                  </div>
-                  <div className="p-5">
-                    <h3 className="mb-2 text-lg font-semibold">화상 회의 플랫폼</h3>
-                    <p className="text-sm text-muted-foreground">WebRTC 기반 실시간 화상 회의 솔루션</p>
-                  </div>
-                </Link>
-
-                <Link
-                  href="/projects"
-                  className="group overflow-hidden rounded-lg border bg-card transition-all hover:shadow-lg"
-                >
-                  <div className="aspect-video w-full overflow-hidden bg-gradient-to-br from-green-500 to-emerald-500">
-                    <img
-                      src="/devops-ci-cd-pipeline-dashboard.jpg"
-                      alt="DevOps 자동화 파이프라인"
-                      className="h-full w-full object-cover transition-transform group-hover:scale-105"
-                    />
-                  </div>
-                  <div className="p-5">
-                    <h3 className="mb-2 text-lg font-semibold">DevOps 자동화 파이프라인</h3>
-                    <p className="text-sm text-muted-foreground">Kubernetes 기반 CI/CD 자동화 시스템</p>
-                  </div>
-                </Link>
+              <div className="space-y-4">
+                {featuredProjects.map((project) => (
+                  <article key={project.title} className="rounded-2xl border p-6 transition-colors hover:border-foreground/30">
+                    <div className="flex flex-col gap-2">
+                      <h3 className="text-lg font-semibold">{project.title}</h3>
+                      <p className="text-sm text-muted-foreground">{project.description}</p>
+                    </div>
+                    <div className="mt-4 flex flex-wrap gap-2 text-xs text-muted-foreground">
+                      {project.tags.map((tag) => (
+                        <span key={tag} className="rounded-full border px-3 py-1">
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                    <div className="mt-4 flex flex-wrap gap-4 text-sm text-muted-foreground">
+                      {project.github && (
+                        <a
+                          href={project.github}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="underline-offset-4 hover:text-foreground hover:underline"
+                        >
+                          GitHub
+                        </a>
+                      )}
+                      {project.demo && (
+                        <a
+                          href={project.demo}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="underline-offset-4 hover:text-foreground hover:underline"
+                        >
+                          Demo
+                        </a>
+                      )}
+                    </div>
+                  </article>
+                ))}
               </div>
             </div>
           </div>
@@ -246,10 +230,7 @@ export default function HomePage() {
                   <h3 className="mb-4 text-lg font-bold">Backend</h3>
                   <div className="flex flex-wrap gap-2">
                     {["Java", "Kotlin", "Spring Boot", "Node.js"].map((tech) => (
-                      <span
-                        key={tech}
-                        className="rounded-md bg-accent px-3 py-1.5 text-sm font-medium text-accent-foreground"
-                      >
+                      <span key={tech} className="rounded-full border px-3 py-1 text-xs text-muted-foreground">
                         {tech}
                       </span>
                     ))}
@@ -259,10 +240,7 @@ export default function HomePage() {
                   <h3 className="mb-4 text-lg font-bold">Frontend</h3>
                   <div className="flex flex-wrap gap-2">
                     {["TypeScript", "React", "Next.js", "Tailwind CSS"].map((tech) => (
-                      <span
-                        key={tech}
-                        className="rounded-md bg-accent px-3 py-1.5 text-sm font-medium text-accent-foreground"
-                      >
+                      <span key={tech} className="rounded-full border px-3 py-1 text-xs text-muted-foreground">
                         {tech}
                       </span>
                     ))}
@@ -272,10 +250,7 @@ export default function HomePage() {
                   <h3 className="mb-4 text-lg font-bold">Database</h3>
                   <div className="flex flex-wrap gap-2">
                     {["PostgreSQL", "MySQL", "MongoDB", "Redis"].map((tech) => (
-                      <span
-                        key={tech}
-                        className="rounded-md bg-accent px-3 py-1.5 text-sm font-medium text-accent-foreground"
-                      >
+                      <span key={tech} className="rounded-full border px-3 py-1 text-xs text-muted-foreground">
                         {tech}
                       </span>
                     ))}
@@ -285,10 +260,7 @@ export default function HomePage() {
                   <h3 className="mb-4 text-lg font-bold">DevOps</h3>
                   <div className="flex flex-wrap gap-2">
                     {["Docker", "Kubernetes", "AWS", "GCP", "GitHub Actions"].map((tech) => (
-                      <span
-                        key={tech}
-                        className="rounded-md bg-accent px-3 py-1.5 text-sm font-medium text-accent-foreground"
-                      >
+                      <span key={tech} className="rounded-full border px-3 py-1 text-xs text-muted-foreground">
                         {tech}
                       </span>
                     ))}
@@ -298,10 +270,7 @@ export default function HomePage() {
                   <h3 className="mb-4 text-lg font-bold">Tools</h3>
                   <div className="flex flex-wrap gap-2">
                     {["Git", "IntelliJ IDEA", "VS Code", "Postman"].map((tech) => (
-                      <span
-                        key={tech}
-                        className="rounded-md bg-accent px-3 py-1.5 text-sm font-medium text-accent-foreground"
-                      >
+                      <span key={tech} className="rounded-full border px-3 py-1 text-xs text-muted-foreground">
                         {tech}
                       </span>
                     ))}
@@ -313,14 +282,18 @@ export default function HomePage() {
         </section>
 
         {/* CTA Section */}
-        <section className="border-t bg-primary py-20 text-primary-foreground">
+        <section className="border-t bg-background py-16">
           <div className="container">
-            <div className="mx-auto max-w-2xl text-center">
-              <h2 className="mb-4 text-3xl font-bold">연락하기</h2>
-              <p className="mb-8 text-lg opacity-90">프로젝트 협업이나 기술 상담이 필요하신가요? 언제든 연락주세요.</p>
-              <Button asChild size="lg" variant="secondary" className="bg-white text-primary hover:bg-white/90">
-                <Link href="/contact">연락하기</Link>
-              </Button>
+            <div className="mx-auto max-w-2xl space-y-4 text-center">
+              <h2 className="text-3xl font-semibold">함께 만들 프로젝트가 있나요?</h2>
+              <p className="text-sm text-muted-foreground">
+                설계와 구현 모두에서 단순함을 지향합니다. 필요한 것이 명확하다면 짧게 메일을 남겨주세요.
+              </p>
+              <div className="flex justify-center">
+                <Button asChild variant="outline" size="lg">
+                  <Link href="/contact">연락하기</Link>
+                </Button>
+              </div>
             </div>
           </div>
         </section>
