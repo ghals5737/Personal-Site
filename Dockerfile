@@ -17,7 +17,7 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
 # Build contentlayer
-RUN npm run contentlayer
+RUN npx contentlayer2 build
 
 # Build the application
 RUN npm run build

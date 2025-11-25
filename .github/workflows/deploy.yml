@@ -27,13 +27,13 @@ jobs:
     #     echo "NEXT_PUBLIC_API_BASE_URL=${{ secrets.NEXT_PUBLIC_API_BASE_URL }}" >> .env
 
     - name: Build Docker image
-      run: docker buildx build . -t registry.booknote.site/booknote-front:latest --push
+      run: docker buildx build . -t registry.booknote.site/personal-site:latest --push
      
     - name: Send POST request to webhook
       run: |
         curl -X POST https://webhook.booknote.site \
         -H "Content-Type: application/json" \
-        -d '{"status": "success", "message": "Deployment completed for tag ${{ github.ref_name }}", "authKey": "${{ secrets.WEBHOOK_AUTH_KEY }}", "serviceName": "BooknoteFront"}'
+        -d '{"status": "success", "message": "Deployment completed for tag ${{ github.ref_name }}", "authKey": "${{ secrets.WEBHOOK_AUTH_KEY }}", "serviceName": "PersonalSite"}'
 
     - name: Logout from Docker registry
       run: docker logout registry.booknote.site
