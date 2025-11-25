@@ -1,4 +1,4 @@
-import { defineDocumentType, makeSource } from "contentlayer/source-files"
+import { defineDocumentType, makeSource } from "contentlayer2/source-files"
 import rehypePrettyCode from "rehype-pretty-code"
 import rehypeSlug from "rehype-slug"
 import rehypeAutolinkHeadings from "rehype-autolink-headings"
@@ -65,7 +65,7 @@ export const Post = defineDocumentType(() => ({
 }))
 
 export default makeSource({
-  contentDirPath: "content",
+  contentDirPath: "src/content",
   documentTypes: [Post],
   mdx: {
     remarkPlugins: [remarkGfm],

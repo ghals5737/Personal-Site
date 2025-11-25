@@ -22,7 +22,7 @@ lang: "ko"
 
 DDD(Domain-Driven Design) 접근 방식으로 도메인을 식별했습니다.
 
-\`\`\`
+```
 ┌─────────────────────────────────────────┐
 │         Monolithic Application          │
 ├─────────────────────────────────────────┤
@@ -33,7 +33,7 @@ DDD(Domain-Driven Design) 접근 방식으로 도메인을 식별했습니다.
 │  User    │  │ Product  │  │  Order   │  │ Payment  │
 │ Service  │  │ Service  │  │ Service  │  │ Service  │
 └──────────┘  └──────────┘  └──────────┘  └──────────┘
-\`\`\`
+```
 
 ### 2. 데이터베이스 분리
 
@@ -43,7 +43,7 @@ DDD(Domain-Driven Design) 접근 방식으로 도메인을 식별했습니다.
 **주의**: 외래 키 제약조건을 제거하면 데이터 정합성 관리가 애플리케이션 레벨로 이동합니다.
 </Callout>
 
-\`\`\`sql
+```sql
 -- Before: 모놀리식 DB
 CREATE TABLE orders (
     id BIGINT PRIMARY KEY,
@@ -60,13 +60,13 @@ CREATE TABLE orders (
     user_id BIGINT,  -- 외래 키 제약 없음
     product_id BIGINT  -- 외래 키 제약 없음
 );
-\`\`\`
+```
 
 ## API Gateway 구축
 
 Spring Cloud Gateway를 사용하여 API Gateway를 구축했습니다.
 
-\`\`\`java
+```java
 @Configuration
 public class GatewayConfig {
     
@@ -97,13 +97,13 @@ public class GatewayConfig {
             .build();
     }
 }
-\`\`\`
+```
 
 ## 서비스 간 통신
 
 ### 동기 통신: OpenFeign
 
-\`\`\`java
+```java
 @FeignClient(name = "product-service")
 public interface ProductClient {
     
@@ -131,11 +131,11 @@ public class OrderService {
         return orderRepository.save(new Order(request));
     }
 }
-\`\`\`
+```
 
 ### 비동기 통신: Kafka
 
-\`\`\`java
+```java
 @Configuration
 public class KafkaConfig {
     
@@ -176,13 +176,13 @@ public class OrderEventConsumer {
         processPayment(event);
     }
 }
-\`\`\`
+```
 
 ## 분산 트랜잭션: Saga 패턴
 
 Choreography 방식의 Saga 패턴을 구현했습니다.
 
-\`\`\`java
+```java
 // Order Service
 @Service
 @RequiredArgsConstructor
@@ -221,7 +221,7 @@ public class OrderSagaOrchestrator {
         }
     }
 }
-\`\`\`
+```
 
 <Callout type="info">
 **Saga 패턴**: 각 서비스가 로컬 트랜잭션을 실행하고, 이벤트를 발행하여 다음 단계를 트리거합니다. 실패 시 보상 트랜잭션으로 롤백합니다.
@@ -229,7 +229,7 @@ public class OrderSagaOrchestrator {
 
 ## Kubernetes 배포
 
-\`\`\`yaml
+```yaml
 # order-service-deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
@@ -289,7 +289,7 @@ spec:
   - port: 80
     targetPort: 8080
   type: ClusterIP
-\`\`\`
+```
 
 ## 전환 결과
 
@@ -322,4 +322,4 @@ Conway's Law에 따라 팀 구조도 서비스 단위로 재편성했습니다.
 MSA 전환은 기술적 도전이자 조직적 변화입니다. 우리 팀은 6개월간의 전환 과정을 통해 많은 것을 배웠고, 이제는 더 빠르고 안정적으로 서비스를 제공할 수 있게 되었습니다.
 
 다음 글에서는 MSA 환경에서의 테스트 전략에 대해 다루겠습니다.
-\`\`\`
+```

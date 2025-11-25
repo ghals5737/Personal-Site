@@ -17,7 +17,7 @@ lang: "ko"
 
 상품 목록 조회 API에서 심각한 성능 저하가 발생했습니다. 100개의 상품을 조회할 때 101개의 쿼리가 실행되고 있었습니다.
 
-\`\`\`java
+```java
 // 문제가 있는 코드
 @Entity
 public class Product {
@@ -33,13 +33,13 @@ public class Product {
 
 // Repository
 List<Product> products = productRepository.findAll();
-\`\`\`
+```
 
 ### 해결 방법
 
 Fetch Join과 EntityGraph를 활용하여 N+1 문제를 해결했습니다.
 
-\`\`\`java
+```java
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
     
@@ -52,7 +52,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @EntityGraph(attributePaths = {"category", "reviews"})
     List<Product> findAll();
 }
-\`\`\`
+```
 
 <Callout type="success">
 **결과**: 쿼리 수가 101개에서 1개로 감소하고, 응답 시간이 2.3초에서 0.3초로 개선되었습니다.
@@ -64,7 +64,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
 ### Look-Aside 패턴 구현
 
-\`\`\`java
+```java
 @Service
 @RequiredArgsConstructor
 public class ProductService {
@@ -91,7 +91,7 @@ public class ProductService {
         return product;
     }
 }
-\`\`\`
+```
 
 <Callout type="info">
 **캐시 무효화**: 상품 정보가 업데이트될 때는 반드시 캐시를 삭제해야 합니다.
@@ -101,7 +101,7 @@ public class ProductService {
 
 HikariCP 설정을 최적화하여 DB 커넥션 관리를 개선했습니다.
 
-\`\`\`yaml
+```yaml
 spring:
   datasource:
     hikari:
@@ -111,13 +111,13 @@ spring:
       idle-timeout: 600000
       max-lifetime: 1800000
       leak-detection-threshold: 60000
-\`\`\`
+```
 
 ### 적정 풀 사이즈 계산
 
-\`\`\`
+```
 connections = ((core_count * 2) + effective_spindle_count)
-\`\`\`
+```
 
 4코어 서버에서 SSD 사용 시: (4 * 2) + 1 = 9개 정도가 적정합니다.
 
@@ -129,7 +129,7 @@ connections = ((core_count * 2) + effective_spindle_count)
 
 시간이 오래 걸리는 작업은 비동기로 처리하여 응답 시간을 개선했습니다.
 
-\`\`\`java
+```java
 @Service
 public class NotificationService {
     
@@ -156,7 +156,7 @@ public class AsyncConfig implements AsyncConfigurer {
         return executor;
     }
 }
-\`\`\`
+```
 
 ## 성능 개선 결과
 
@@ -176,4 +176,4 @@ public class AsyncConfig implements AsyncConfigurer {
 3. **모니터링 필수** - 개선 후에도 지속적인 모니터링 필요
 
 다음 글에서는 MSA 환경에서의 성능 최적화에 대해 다루겠습니다.
-\`\`\`
+```

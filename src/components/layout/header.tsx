@@ -24,11 +24,12 @@ export function Header() {
   const pathname = usePathname()
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <nav className="container flex h-16 items-center justify-between">
-        <span className="text-lg font-semibold tracking-tight">ghals5737</span>
-
-        <div className="flex items-center gap-6">
+    <header className="sticky top-0 z-50 w-full  border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <nav className="container flex h-16 items-center justify-between mx-auto" >
+        <div className="flex items-center gap-2">
+        <span className="text-lg font-semibold tracking-tight ml">ghals5737</span>
+        </div>
+        <div className="flex items-center gap-6">                
           <ul className="hidden items-center gap-6 md:flex">
             {primaryNavigation.map((item) => (
               <li key={item.href}>
@@ -71,16 +72,7 @@ export function Header() {
             </li>
           </ul>
 
-          <div className="flex items-center gap-3">
-            <a
-              href="https://github.com/ghals5737"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-muted-foreground transition-colors hover:text-primary"
-              aria-label="GitHub"
-            >
-              <Github className="h-5 w-5" />
-            </a>
+          <div className="flex items-center gap-3">            
             <ThemeToggle />
           </div>
         </div>

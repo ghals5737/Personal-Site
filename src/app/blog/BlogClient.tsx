@@ -54,53 +54,7 @@ export default function BlogClient({ posts }: BlogClientProps) {
   }, [posts, selectedTag, searchQuery])
 
   return (
-    <div className="min-h-screen">
-      <header className="border-b bg-background">
-        <div className="container py-12 md:py-16">
-          <div className="mx-auto max-w-4xl space-y-6">
-            <div className="space-y-3 text-left">
-              <p className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">Notes</p>
-              <h1 className="text-4xl font-semibold tracking-tight text-foreground md:text-5xl">기술 블로그</h1>
-              <p className="text-base leading-relaxed text-muted-foreground">
-                실무에서 겪은 문제 해결 방식과 설계 판단 근거를 기록합니다. 덜어내고 싶은 것들만 남긴, 읽기 편한 기술
-                노트입니다.
-              </p>
-            </div>
-
-            <div className="flex items-center justify-between text-xs text-muted-foreground">
-              <span>{posts.length}개의 글을 기록했습니다.</span>
-              <button
-                type="button"
-                onClick={() => setSearchOpen((prev) => !prev)}
-                className="flex items-center gap-2 rounded-full px-3 py-1 text-muted-foreground transition-colors hover:text-foreground"
-                aria-expanded={searchOpen}
-                aria-label="검색 열기"
-              >
-                <Search className="h-4 w-4" />
-                <span>검색</span>
-              </button>
-            </div>
-
-            {showSearchField && (
-              <div className="relative">
-                <Input
-                  type="text"
-                  placeholder="제목, 내용, 태그를 입력하세요"
-                  value={searchQuery}
-                  onChange={(e) => {
-                    setSearchQuery(e.target.value)
-                    if (e.target.value.length > 0) {
-                      setSearchOpen(true)
-                    }
-                  }}
-                  className="h-12 rounded-none border-0 border-b border-border bg-transparent px-0 text-base focus-visible:border-foreground focus-visible:ring-0 placeholder:text-muted-foreground/70"
-                />
-              </div>
-            )}
-          </div>
-        </div>
-      </header>
-
+  <div className="min-h-screen">
   <main>
       <section className="border-b">
         <div className="container py-8">
