@@ -8,7 +8,8 @@ WORKDIR /app
 
 # Install dependencies
 COPY package.json package-lock.json* ./
-RUN npm ci --only=production
+# [수정됨] --only=production 제거 (빌드 시 typescript 등 devDependencies 필요함)
+RUN npm ci 
 
 # Rebuild the source code only when needed
 FROM base AS builder
