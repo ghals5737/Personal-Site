@@ -9,9 +9,9 @@ import { ArrowLeft } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
 interface TagPageProps {
-  params: {
+  params: Promise<{  // 여기를 Promise로 감싸주세요
     tag: string
-  }
+  }>
 }
 
 export async function generateStaticParams() {
@@ -28,7 +28,7 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: TagPageProps): Promise<Metadata> {
-  const tag = decodeURIComponent(params.tag)
+  const tag = decodeURIComponent((await params).tag)
 
   return {
     title: `${tag} 태그`,
@@ -36,8 +36,8 @@ export async function generateMetadata({ params }: TagPageProps): Promise<Metada
   }
 }
 
-export default function TagPage({ params }: TagPageProps) {
-  const tag = decodeURIComponent(params.tag)
+export default async function TagPage({ params }: TagPageProps) {
+  const tag = decodeURIComponent((await params).tag)
 
   const posts = allPosts
     .filter((post) => !post.draft && post.tags.includes(tag))

@@ -10,9 +10,9 @@ import GithubSlugger from "github-slugger"
 import { BlogPostContent } from "./BlogPostContent"
 
 interface PostPageProps {
-  params: {
+  params: Promise<{
     slug: string
-  }
+  }>
 }
 
 interface TocHeading {
@@ -40,8 +40,8 @@ function buildToc(content: string): TocHeading[] {
     .filter((heading): heading is TocHeading => heading !== null)
 }
 
-async function getPostFromParams(params: PostPageProps["params"]) {
-  const post = allPosts.find((post) => post.slug === params.slug)
+async function getPostFromParams(slug: string) {
+  const post = allPosts.find((post) => post.slug === slug)
   return post || null
 }
 
@@ -52,7 +52,8 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: PostPageProps): Promise<Metadata> {
-  const post = await getPostFromParams(params)
+  const { slug } = await params
+  const post = await getPostFromParams(slug)
 
   if (!post) {
     return {}
@@ -92,7 +93,8 @@ export async function generateMetadata({ params }: PostPageProps): Promise<Metad
 }
 
 export default async function PostPage({ params }: PostPageProps) {
-  const post = await getPostFromParams(params)
+  const { slug } = await params
+  const post = await getPostFromParams(slug)
 
   if (!post) {
     notFound()

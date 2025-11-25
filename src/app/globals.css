@@ -172,3 +172,44 @@ html {
 ::selection {
   background-color: rgb(var(--color-primary) / 0.3);
 }
+/* globals.css 같은 곳에 */
+pre code .token.comment,
+pre code .token.prolog,
+pre code .token.doctype,
+pre code .token.cdata {
+  color: #6e7781;
+}
+
+pre code .token.punctuation {
+  color: #24292e;
+}
+
+pre code .token.property,
+pre code .token.tag,
+pre code .token.constant,
+pre code .token.symbol,
+pre code .token.deleted {
+  color: #cf222e;
+}
+
+pre code .token.boolean,
+pre code .token.number {
+  color: #116329;
+}
+
+pre code .token.string,
+pre code .token.char,
+pre code .token.attr-value,
+pre code .token.builtin,
+pre code .token.inserted {
+  color: #0a3069;
+}
+
+pre code .token.keyword {
+  color: #cf222e;
+}
+
+pre code .token.function,
+pre code .token.class-name {
+  color: #0550ae;
+}
